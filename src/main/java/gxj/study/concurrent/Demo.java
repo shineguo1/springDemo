@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.0.0 createTime:  2019/11/14 15:43
  * @description
  */
-public class demo {
+public class Demo {
     AtomicInteger atoInt;
 
     public static void method(String[] args) {
