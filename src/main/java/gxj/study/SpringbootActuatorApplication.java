@@ -1,9 +1,6 @@
 package gxj.study;
 
 import gxj.study.config.AppConfig;
-import gxj.study.service.PersonInterface;
-import gxj.study.service.PersonServiceImpl;
-import gxj.study.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
