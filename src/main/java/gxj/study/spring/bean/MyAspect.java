@@ -1,18 +1,9 @@
-package gxj.study.service;
+package gxj.study.spring.bean;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -58,7 +49,7 @@ class MyAspect {
 //                + retVal);
 //    }
 
-    @Around("this(gxj.study.service.PersonServiceImpl)")
+    @Around("this(gxj.study.spring.service.PersonServiceImpl)")
     public void around(ProceedingJoinPoint pjp) throws Throwable {
         System.out.println("===around start====");
         pjp.proceed();

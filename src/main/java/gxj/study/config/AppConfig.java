@@ -1,12 +1,7 @@
 package gxj.study.config;
 
-import gxj.study.service.MyImportBeanDefinitionRegistrar;
-import gxj.study.service.MyImportSelector;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Component;
 
 /**
  * @author xinjie_guo

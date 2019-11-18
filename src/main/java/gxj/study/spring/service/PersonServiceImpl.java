@@ -1,12 +1,10 @@
-package gxj.study.service;
+package gxj.study.spring.service;
 
+import gxj.study.spring.PersonInterface;
 import gxj.study.util.SpringContextHolder;
 //import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @author xinjie_guo

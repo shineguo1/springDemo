@@ -1,23 +1,17 @@
 package gxj.study;
 
-//import gxj.study.service.BService;
-//import gxj.study.service.MyInvocationHandler;
-import gxj.study.service.MyBean;
-import gxj.study.service.PersonInterface;
-import gxj.study.service.PersonServiceImpl;
+//import gxj.study.spring.BService;
+//import gxj.study.spring.MyInvocationHandler;
+import gxj.study.spring.bean.MyBean;
 import gxj.study.util.SpringContextHolder;
 //import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 //import org.mybatis.spring.SqlSessionFactoryBean;
 //import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.lang.reflect.Proxy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

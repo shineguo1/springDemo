@@ -1,6 +1,4 @@
-package gxj.study.service;
-
-import org.springframework.stereotype.Component;
+package gxj.study.spring.bean;
 
 /**
  * @author xinjie_guo

@@ -1,7 +1,6 @@
-package gxj.study.service;
+package gxj.study.spring.bean;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
