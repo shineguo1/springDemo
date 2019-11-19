@@ -25,16 +25,16 @@ public class MySubscriber extends Subscriber {
     }
 
     public static void main(String[] args) throws Exception {
-//        List<MySubscriber> list = new ArrayList<>();
-//        for(int i=0;i<5;i++) {
-            MySubscriber s = new MySubscriber("订阅者"+1);
-            s.register("/node1");
-//            s.getClient().create().forPath("/hello1");
-//            list.add(s);
-//        }
-//        Thread.sleep(8000);
-//        list.get(0).remove("/node");
-//        System.out.println("==移除订阅者1的订阅==");
+        List<MySubscriber> list = new ArrayList<>();
+        String path = "/node1";
+        for(int i=0;i<5;i++) {
+            MySubscriber s = new MySubscriber("订阅者"+i);
+            s.register(path);
+            list.add(s);
+        }
+        Thread.sleep(8000);
+        list.get(0).remove(path);
+        System.out.println("==移除订阅者1的订阅==");
         Thread.sleep(Integer.MAX_VALUE);
 
     }

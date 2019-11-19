@@ -19,17 +19,18 @@ import java.util.HashMap;
  */
 @Data
 public abstract class Subscriber {
-//    private CuratorFramework client = ZkConnectDemo1.getClient();
-//    private HashMap<String, TreeCache> registerCaches = new HashMap<>();
+    private CuratorFramework client = ZkConnectDemo1.getClient();
+    private HashMap<String, TreeCache> registerCaches = new HashMap<>();
 
     public abstract void execute(ChildData data);
 
     public void register(String path) throws Exception {
-        CuratorFramework client = ZkConnectDemo1.getClient();
+        client = ZkConnectDemo1.getClient();
         TreeCache treeCache = new TreeCache(client, path);
         /*
         * 只有无参start方法
          */
+        treeCache.start();
         treeCache.getListenable().addListener(new TreeCacheListener() {
             @Override
             public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
@@ -39,19 +40,18 @@ public abstract class Subscriber {
                     System.out.println("pathChildrenCache------发生的节点变化类型为：" + event.getType() + ",发生变化的节点内容为：" +
                             (event.getData().getData() == null ? null : new String(event.getData().getData())) +
                             ",路径：" + event.getData().getPath()); // print ③
-//                    execute(event.getData());
+                    execute(event.getData());
                 }
             }
         });
-//        registerCaches.put(path, treeCache);
-//        new ZkWatcherDemo1().addTreeCachhe(path);
+        registerCaches.put(path, treeCache);
     }
 
-//    public void remove(String path) {
-//        TreeCache cache = registerCaches.get(path);
-//        if (cache != null) {
-//            cache.close();
-//            registerCaches.remove(path);
-//        }
-//    }
+    public void remove(String path) {
+        TreeCache cache = registerCaches.get(path);
+        if (cache != null) {
+            cache.close();
+            registerCaches.remove(path);
+        }
+    }
 }
