@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class ZkWatcherDemo1 {
 
-    private void addNodeCache(String path) throws Exception {
+    public  void addNodeCache(String path) throws Exception {
         CuratorFramework client = ZkConnectDemo1.getClient();
         /*
         * path不存在不会自动创建，但是可以监听不存在的节点（能监听到新建行为）
@@ -47,7 +47,7 @@ public class ZkWatcherDemo1 {
         });
     }
 
-    private void addPathChildCache(String path, PathChildrenCache.StartMode mode) throws Exception {
+    public void addPathChildCache(String path, PathChildrenCache.StartMode mode) throws Exception {
         CuratorFramework client = ZkConnectDemo1.getClient();
         /*
         * path不存在，会自动创建
@@ -92,7 +92,7 @@ public class ZkWatcherDemo1 {
 //        });
     }
 
-    private void addTreeCachhe(String path) throws Exception {
+    public void addTreeCachhe(String path) throws Exception {
         CuratorFramework client = ZkConnectDemo1.getClient();
         TreeCache treeCache = new TreeCache(client,path);
         /*
@@ -111,13 +111,13 @@ public class ZkWatcherDemo1 {
                 }
             }
         });
-        client.getUnhandledErrorListenable().addListener(new UnhandledErrorListener() {
-            @Override
-            public void unhandledError(String message, Throwable e) {
-                System.out.println("【error!】 message:" + message + "; detail" + e);// \
-
-            }
-        });
+//        client.getUnhandledErrorListenable().addListener(new UnhandledErrorListener() {
+//            @Override
+//            public void unhandledError(String message, Throwable e) {
+//                System.out.println("【error!】 message:" + message + "; detail" + e);// \
+//
+//            }
+//        });
 
 
     }
