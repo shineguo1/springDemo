@@ -37,9 +37,9 @@ public abstract class Subscriber {
                 if (event.getType() == TreeCacheEvent.Type.INITIALIZED) {
                     System.out.println("初始化！");// print ②
                 } else {
-                    System.out.println("pathChildrenCache------发生的节点变化类型为：" + event.getType() + ",发生变化的节点内容为：" +
-                            (event.getData().getData() == null ? null : new String(event.getData().getData())) +
-                            ",路径：" + event.getData().getPath()); // print ③
+//                    System.out.println("pathChildrenCache------发生的节点变化类型为：" + event.getType() + ",发生变化的节点内容为：" +
+//                            (event.getData().getData() == null ? null : new String(event.getData().getData())) +
+//                            ",路径：" + event.getData().getPath()); // print ③
                     execute(event.getData());
                 }
             }

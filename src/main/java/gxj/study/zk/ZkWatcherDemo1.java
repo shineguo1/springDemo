@@ -10,6 +10,8 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.framework.recipes.cache.TreeCache;
 import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 import java.util.Date;
 
@@ -111,24 +113,27 @@ public class ZkWatcherDemo1 {
                 }
             }
         });
-//        client.getUnhandledErrorListenable().addListener(new UnhandledErrorListener() {
-//            @Override
-//            public void unhandledError(String message, Throwable e) {
-//                System.out.println("【error!】 message:" + message + "; detail" + e);// \
-//
-//            }
-//        });
+        client.getUnhandledErrorListenable().addListener(new UnhandledErrorListener() {
+            @Override
+            public void unhandledError(String message, Throwable e) {
+                System.out.println("【error!】 message:" + message + "; detail" + e);// \
+
+            }
+        });
 
 
     }
 
     public static void main(String[] args) throws Exception {
+//        Logger.getLogger("org.apache.spark").setLevel(Level.ERROR);
+//        Logger.getLogger("org.eclipse.jetty.server").setLevel(Level.OFF);
+        Logger.getLogger("org.apache.zookeeper.ClientCnxn").setLevel(Level.ERROR);
 //        new ZkWatcherDemo1().addNodeCache("/p3");
 //        new ZkWatcherDemo1().addPathChildCache("/p2", PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
-        new ZkWatcherDemo1().addTreeCachhe("/p3");
-
+        new ZkWatcherDemo1().addTreeCachhe("/");
         while (true) {
-        }
 
+        }
+//        ZkConnectDemo1.getClient().close();
     }
 }
