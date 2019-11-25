@@ -34,6 +34,7 @@ public class ProductPoolDemo1 {
      * 所以使用连接池时需要加上get()同步操作等待发送消息(实验时发现,使用while循环发送大量消息,和使用thread.sleep休眠一会,ioThread也会有足够的时间将消息发送出去)
      * 直接使用producer.close() 时,close()方法会等待消息发送完之后再执行(会自动阻塞),所以可以不加producer.send(...).get();
      *
+     *  参考博客: https://blog.csdn.net/QYHuiiQ/article/details/88757209
      * @param args
      * @throws Exception
      */
