@@ -23,7 +23,7 @@ public class SimpleProducer {
 
     @Override
     protected void finalize() {
-//        producer.close();
+        producer.close();
     }
 
     public <T> void sendMessage(String topic, T msg) throws ExecutionException, InterruptedException {
@@ -31,26 +31,23 @@ public class SimpleProducer {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
 
                 }
                 System.out.println("生产者回调 - 元数据：" + metadata + " e:" + exception);
             }
         }).get();
-        System.out.println("生产者连接【准备关闭】");
-        producer.close();
-        System.out.println("生产者连接【关闭】");
     }
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         SimpleProducer p = new SimpleProducer();
         int c = 0;
-//        while (true) {
-            p.sendMessage(TopicConst.TOPIC1, "data from api " + c);
-//            Thread.sleep(3000);
-//            c++;
-//        }
+        while (true) {
+            p.sendMessage(TopicConst.TOPIC1, "1620 data from api " + c);
+//            Thread.sleep(1000);   //producer.send.get 设置为同步模式,会等待回调函数里的thread.sleep,这里不需要休眠了.
+            c++;
+        }
     }
 
 

@@ -27,10 +27,10 @@ public class SpringbootActuatorApplication {
         SpringApplication.run(SpringbootActuatorApplication.class, args);
 //		Logger.getLogger("org.apache.zookeeper.ClientCnxn").setLevel(Level.ERROR);
 //		new ZkWatcherDemo1().addTreeCachhe("/");
-        String path = "/";
-        MySubscriber s = new MySubscriber("订阅者" );
-        s.register(path);
-        System.out.println("==移除订阅者1的订阅==");
+//        String path = "/";
+//        MySubscriber s = new MySubscriber("订阅者" );
+//        s.register(path);
+//        System.out.println("==移除订阅者1的订阅==");
     }
 
 }

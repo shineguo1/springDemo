@@ -45,6 +45,7 @@ public class ConsumerForward {
                 List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
                 for (ConsumerRecord<String, String> record : partitionRecords) {
                     try {
+                        //同步提交
                         consumer.commitSync(Collections.singletonMap(partition, new OffsetAndMetadata(record.offset() + 1)));
                     } catch (Exception e) {
                         logger.warn("kafka is timeout since maybe business code processing to low:{}", e);
