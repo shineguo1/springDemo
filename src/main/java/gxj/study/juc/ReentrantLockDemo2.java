@@ -1,4 +1,4 @@
-package gxj.study.concurrent;
+package gxj.study.juc;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;

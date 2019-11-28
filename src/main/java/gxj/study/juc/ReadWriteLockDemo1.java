@@ -1,6 +1,5 @@
-package gxj.study.concurrent;
+package gxj.study.juc;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;

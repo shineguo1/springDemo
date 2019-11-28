@@ -1,6 +1,4 @@
-package gxj.study.concurrent;
-
-import sun.security.jca.GetInstance;
+package gxj.study.juc;
 
 /**
  * @author xinjie_guo

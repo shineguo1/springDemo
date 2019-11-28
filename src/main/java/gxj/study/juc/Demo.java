@@ -1,6 +1,4 @@
-package gxj.study.concurrent;
-
-import lombok.var;
+package gxj.study.juc;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

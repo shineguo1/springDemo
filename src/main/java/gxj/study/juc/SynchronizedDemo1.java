@@ -1,4 +1,4 @@
-package gxj.study.concurrent;
+package gxj.study.juc;
 
 /**
  * @author xinjie_guo
