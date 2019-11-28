@@ -26,17 +26,28 @@ public class MyObjPool extends GenericObjectPool<MyObj> {
     }
 
     public static void main(String[] args) throws Exception {
-        MyObjPool.test();
+        new MyObjPoolTest().test();
 
     }
 
+}
+
+class MyObjPoolTest {
+
+    /**
+     * 缓存管理所有未释放的对象
+     */
     private ArrayList<MyObj> listCache = new ArrayList<>();
 
-    private static void test() throws Exception {
-        //对线池最大对象maxTotal = 4，最大空闲对象maxIdle = 2。
-        MyObjPool pool = new MyObjPool();
+    /**
+     * 对线池最大对象maxTotal = 4，最大空闲对象maxIdle = 2。
+     */
+    private static MyObjPool pool;
+
+    void test() throws Exception {
+        //初始化对象池
+        pool = new MyObjPool();
         //初始化，清空缓存
-        ArrayList<MyObj> listCache = pool.getListCache();
         listCache.clear();
         //从对象池获取五个对象。
         for (int i = 1; i <= 5; i++) {
@@ -49,12 +60,12 @@ public class MyObjPool extends GenericObjectPool<MyObj> {
             listCache.add(o);
             if (i == 3) {
                 //第三个对象将在一秒后释放。
-                new Thread(pool.releaseAfterOneSecond(o)).start();
+                new Thread(this.releaseAfterOneSecond(o)).start();
             }
         }
         //释放所有连接
-        listCache.forEach(o->{
-            System.out.println(o.toString()+" 释放");
+        listCache.forEach(o -> {
+            System.out.println(o.toString() + " 释放");
             pool.returnObj(o);
         });
         //从对象池获取4个对象。
@@ -71,16 +82,15 @@ public class MyObjPool extends GenericObjectPool<MyObj> {
         System.out.println("end");
     }
 
-    private Runnable releaseAfterOneSecond( MyObj o) {
-        MyObjPool p = this;
+    private Runnable releaseAfterOneSecond(MyObj o) {
         return () -> {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
 
             }
-            System.out.println(o.toString()+" 即将释放");
-            p.returnObject(o);
+            System.out.println(o.toString() + " 即将释放");
+            pool.returnObject(o);
             listCache.remove(o);
         };
     }
