@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 //@EnableAspectJAutoProxy(proxyTargetClass = false)
-public class SpringbootActuatorApplicationTests {
+public class BaseTest {
 //    @Autowired
 //    BService bService;
 
