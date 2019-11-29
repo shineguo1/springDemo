@@ -1,8 +1,8 @@
 package gxj.study;
 
-//import gxj.study.spring.BService;
-//import gxj.study.spring.MyInvocationHandler;
-import gxj.study.spring.bean.MyBean;
+//import gxj.study.demo.spring.BService;
+//import gxj.study.demo.spring.MyInvocationHandler;
+import gxj.study.demo.spring.bean.MyBean;
 import gxj.study.util.SpringContextHolder;
 //import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;

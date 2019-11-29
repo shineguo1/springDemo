@@ -1,21 +1,10 @@
 package gxj.study;
 
 import gxj.study.config.AppConfig;
-import gxj.study.zk.ZkWatcherDemo1;
-import gxj.study.zk.publishSubscribePattern.MySubscriber;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Controller;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
         (scanBasePackages = {"gxj.study.util"})
