@@ -12,7 +12,6 @@ import java.util.concurrent.ExecutionException;
  * <ul>
  * <li>生产者服务类</li>
  * <li>此类封装生产者发送实体,对外提供统一入口<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ProductService {

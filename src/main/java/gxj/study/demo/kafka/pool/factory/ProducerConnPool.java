@@ -11,7 +11,6 @@ import org.apache.kafka.clients.producer.Producer;
  * <li>1、构造ProducerPool池<li>
  * <li>2、获取连接<li>
  * <li>3、释放连接<li>
- * <li>User: weiwei Date:16/5/23 <li>
  * </ul>
  */
 public class ProducerConnPool extends GenericObjectPool<Producer> {

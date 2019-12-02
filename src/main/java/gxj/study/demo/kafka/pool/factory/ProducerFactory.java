@@ -13,7 +13,6 @@ import java.util.Map;
  * <ul>
  * <li>生产者工厂类</li>
  * <li>管理生产者的创建与销毁<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 @Deprecated

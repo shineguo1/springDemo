@@ -18,7 +18,6 @@ import java.util.List;
  * <ul>
  * <li>消费者转发</li>
  * <li>接收到消息后,转发到各个业务处理类<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ConsumerForward {

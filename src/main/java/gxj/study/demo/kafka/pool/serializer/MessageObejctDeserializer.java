@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * <ul>
  * <li>对象反系列化类</li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 

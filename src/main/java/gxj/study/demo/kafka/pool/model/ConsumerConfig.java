@@ -3,7 +3,6 @@ package gxj.study.demo.kafka.pool.model;
 /**
  * <ul>
  * <li>消费者配置类</li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ConsumerConfig {

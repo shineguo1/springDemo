@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 /**
  * <ul>
  * <li>生产者连接工厂</li>
- * <li>User: weiwei Date:16/5/23 <li>
  * </ul>
  */
 public class ProducerConnFactory extends BasePooledObjectFactory<Producer> {

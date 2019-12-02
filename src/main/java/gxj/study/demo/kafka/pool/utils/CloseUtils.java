@@ -9,7 +9,6 @@ import java.io.IOException;
 /**
  * <ul>
  * <li>关闭流公共包</li>
- * <li>User: weiwei Date:16/5/14 <li>
  * </ul>
  */
 public class CloseUtils {

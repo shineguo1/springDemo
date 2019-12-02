@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
  * <ul>
  * <li>消费者处理类</li>
  * <li>启动消费者进行消息拉取<li>
- * <li>User: weiwei Date:16/5/14 <li>
  * </ul>
  */
 public class ConsumerHandler {

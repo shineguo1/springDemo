@@ -10,7 +10,6 @@ import java.util.Map;
  * <ul>
  * <li>消费者处理控制类</li>
  * <li>控制管理消费者处理类<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class BizClassUtils {

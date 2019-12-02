@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * <ul>
  * <li>json序列化类</li>
- * <li>User: weiwei Date:16/5/16 <li>
  * </ul>
  */
 public class MessageJsonSerializer implements Serializer {

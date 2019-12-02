@@ -6,8 +6,6 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  * <ul>
  * <li>生产者配置类</li>
  * <li>added:新增线程池功能</li>
- * <li>User: weiwei Date:16/5/11 <li>
- * <li>updated: weiwei Date:16/5/24 <li>
  * </ul>
  */
 public class ProductConfig extends GenericObjectPoolConfig {

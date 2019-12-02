@@ -9,7 +9,6 @@ import java.util.Properties;
  * <ul>
  * <li>消费者构建类</li>
  * <li>保证消费者构建,防止缺胳膊少腿<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ConsumerBuild {

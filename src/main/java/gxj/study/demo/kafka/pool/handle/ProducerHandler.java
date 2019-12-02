@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 /**
  * <ul>
  * <li>生产者处理类</li>
- * <li>User: weiwei Date:16/5/14 <li>
  * </ul>
  */
 public class ProducerHandler {

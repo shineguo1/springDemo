@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
  * <ul>
  * <li>消费者服务类</li>
  * <li>封装消费实体,对外统计提供入口<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ConsumerService {

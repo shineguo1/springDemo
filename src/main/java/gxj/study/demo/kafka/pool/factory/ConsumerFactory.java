@@ -12,7 +12,6 @@ import java.util.Map;
  * <ul>
  * <li>消费者工厂类</li>
  * <li>管理控制消费者的数量<li>
- * <li>User: weiwei Date:16/5/11 <li>
  * </ul>
  */
 public class ConsumerFactory {
