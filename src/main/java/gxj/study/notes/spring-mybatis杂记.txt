@@ -1,0 +1,111 @@
+官网：http://mybatis.org/spring/zh/index.html    
+<!-- 库数据源 -->
+both @Bean & xml ：类型 Datasource
+
+<!-- 配置SqlSessionFactory -->
+1. java配置@Bean 返回类型SqlSessionFactory
+@Bean
+public SqlSessionFactory sqlSessionFactory() {
+  SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+  factoryBean.setDataSource(dataSource());
+  factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/*.xml"));
+  return factoryBean.getObject();
+}
+2. xml配置bean
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  <property name="dataSource" ref="dataSource" />
+  <property name="mapperLocations" value="classpath*:sample/config/mappers/**/*.xml" />
+</bean>
+3. 多个数据库
+ 需要配置databaseIdProvider：参见官网
+
+ 
+<!-- 配置事务管理器 -->
+DataSourceTransactionManager
+
+<!-- 编程式事务-->
+SqlSessionTemplate
+
+<!--注入mapper-->
+1. 单个注入：  
+<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="org.mybatis.spring.sample.mapper.UserMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
+这种方式等价于@Mapper注解
+
+2. 批量扫描
+2.1 使用 <mybatis:scan/> 元素 - 依赖版本：MyBatis-Spring 1.2.0
+  <mybatis:scan base-package="org.mybatis.spring.dal.mapper" />
+
+2.2 使用 @MapperScan 注解 - 依赖版本：MyBatis-Spring 1.2.0 、Spring 3.1+
+@Configuration
+@MapperScan("org.mybatis.spring.dal.mapper")
+	// @MapperScan(basePackages = {"com.xxxx.xxxx.xxxx.dal.mapper"}, sqlSessionFactoryRef = "sqlSessionFactory") 第二参数用的是<bean id 即@Bean的方法名
+public class AppConfig {
+  // ...
+}
+
+2.3 在经典 Spring XML 配置文件中注册一个 MapperScannerConfigurer
+   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.mybatis.spring.dal.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+===========
+
+题外话，说明@lazy应用场景
+Class A初始化输入参数Class B
+Class B{
+   @Autowired
+   @Lazy
+   public B(A a){}
+}
+解决循环依赖
+==============
+原理：
+1. mapper bean本质是$Proxy(MapperProxy) ---jdk动态代理
+通过SqlSession(接口，一般实现类是SqlSessionTemplate)的getMapper方法，内部通过mapperProxyFactory，最底层调用Proxy.newProxyInstance创建proxy。代理的InvocationHandler是MapperProxy类。
+执行mapper方法的时候，会调用mapperProxy的invoke，再调用mapperMethod.excute(sqlSession,args[])
+
+用类似yml的语法描述一下mapperMethod，这里带上了类型和变量名：
+(MapperMethod)mapperMethod:
+    (SqlCommand)command :
+       (String)name = com.xxxx.xxxx.mapper.selectUser
+       ((Enum)SqlCommandType) type = "SELECT"
+    (MethodSignature) method:
+         省略
+
+可以拿到方法的名字，自然可以拿到对应的xml里的sql语句，或者方法注解里的sql语句，进而通过sqlSession执行sql语句。
+===============
+第一个问题：
+通过这个原理，可以解释为什么mapper里的方法都是interface：
+答：mapper里的方法执行逻辑都是一样的。通过method.name映射到对应的sql语句，再配上传进来的参数，通过sqlSession执行sql语句。既然逻辑一样，就可以通过AOP增强实现。mybatis采取了jdk动态代理，封装了这些“重复”的逻辑。
+实际的mapper对象是mapper接口的proxy，jdk动态代理是基于接口实现的，所以mapper的类型是interface。
+
+==============
+第二个问题：
+mybatis的mapper是通过getMapper映射成jdk动态代理，那它是如何被纳入spring容器管理的呢？
+答：以上方法是在 org.apache.ibatis包下的，是可以脱离spring独立执行的mybatis的代码。
+在org.mybatis.spring包下，有一个MapperFactoryBean，实现了FactoryBean接口。成员变量是泛型类对应具体的mapper接口。getObject返回这个接口的实例化对象。
+MapperFactoryBean通过带参构造函数MapperFactoryBean(Class<T> mapperInterface)实例化，使其成为实例化所有mapper的通解。这个参数由beanDefinition传入，通过反射实例化。
+
+@MapperScan注解@Import实例化了MapperScannerRegistrar，MapperScannerRegistrar实现了ImportBeanDefinitionRegistrar。
+MapperScannerRegistrar在@override registerBeanDefinitions方法中，扫描了注释里写的所有包，获得了包下的所有mapperInterface。然后遍历所有mapperInterface，将其写入beanDefinition中，通过beanDefinition将每一个mapperInterface实例化一个MapperFactoryBean。
+于是所有的mapper接口都纳入了spring的管理。
+
+当然也可以用@Mapper或者xml方式在spring中分别为每个mapper接口注册bean的factorybean对象，参见上文。
+
+补充说明：SqlSessionTemplate确实是org.mybatis.spring包下的，但它实现的接口SqlSession是org.apache.ibatis.session下的。
+
+===================
+
+iBatis 原理
+
+ibatis查询的时候，无论是通过sqlSession的selectOne还是selectList，最后都会调用selectList。区别是selectOne会对查询结果List做判断，list长度超过1会抛出异常。
+selectList是如何执行sql语句的呢，因为sqlSession持有一个Configuration对象，configuration维护了一个mappedStatements的map，这个map是经过ibatis拓展了的map。key是XXXMapper.xml里的“包名+id”，value是MappedStatement 描述了sql语句。
+selectList通过被执行的mapper类名和方法名从这个map里查出了对应的sql，selectList本身传入了sql需要的参数，于是便能执行sql。
+selectList首先会查询sqlSession的一级缓存。但是这在spring中是没用的。因为单独使用ibatis时，sqlSession是由自己控制的，可以选择session.close()的时机，在session.close()之前session是生效的。但是在spring中，sqlsession是由spring管理的，每个http请求结束都会自动关闭sqlsession，所以缓存是无效的。
+执行sql语句底层会调用BaseExecutor的doQuery抽象方法，由BatchExecutor实现。这个方法通过Statement执行sql（最底层是statement.execute(sql);）

@@ -1,0 +1,32 @@
+
+MyISAM-堆表
+按插入顺序记录在表中
+
+innoDB-聚集
+
+B+tree 索引
+
+事务：
+ - 自动提交
+ - 隐式提交
+
+隔离级别
+sql定义：读未提交、读已提交、可重复度、串行化
+特别地，mysql在可重复读级别中解决了幻读的问题。
+知识点：MVCC、GAP-LOCK、NEXT-KEY LOCK
+
+mysql的锁机制
+https://www.cnblogs.com/leedaily/p/8378779.html
+https://www.cnblogs.com/xibuhaohao/p/11065350.html
+
+
+---------
+
+负向查询（not、！之类）会导致全表扫描
+对字段使用运算符或函数会导致全表扫描
+隐式属性转换容易导致全表扫描（如果转了字段中的数据，就等于用了类型转换函数）
+in和exist的选择 - 先运算小表：in先运算in(里面的)，exist先运算(前面的先算)exist(里面的后算)
+不建议使用null（经实验is null、is not null会走索引，但是 col != "123" 不会命中null）
+建立组合索引时，等号运算在前比较运算在后、区分度高(唯一性)在前	
+sum(col)在当col全为null会返回null，有NPE风险，建议使用三目运算符
+in内集合元素尽量小于1000

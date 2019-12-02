@@ -1,0 +1,231 @@
+前置：
+register() : 把7个内置类放到beanDefinitionMap中，包括appcofig，CommonAnnotationBeanPostProcesser，AutowiredAnnotationBeanPostProcesser等
+refresh()中的
+invokeBeanFactoryPostProcessers：扫描解析 打上注释的bean，component
+
+属性注入后：
+AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialtion  :  执行@PostConstruct#初始化回调 //同时也执行了其他的后置处理器
+AbstractAutowireCapableBeanFactory#invokeinitmethods ： 执行@Override#afterProperties()#初始化回调
+两者代码是顺序的，中间没有夹杂其他代码。如果只有一种，可以理解为一样，如果有两种，他们是有先后的。
+AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization ：执行代理等后置处理器。其中AnnotationAwareAspectJAutoProxyCreator完成了代理。
+生命周期：扫描、解析、getbean、实例化、依赖注入、lifecycle callbacks、代理（未完）
+从getBean开始，java对象实例化、填充装配、唤醒Aware方法、BeanPostProcessor后置处理（before)、初始化、BeanPostProcessor后置处理(after)、生成bean、销毁
+===
+关于后置处理器
+BeanPostProcessor是个接口，有两个方法：
+1. postProcessBeforeInitialization
+2. postProcessAfterInitialization
+Spring中有个方法getBeanPostProcessors()方法，可以获取所有的后置处理器。
+对后置处理器的使用，就是调用它接口的方法。
+最广为人知的后置处理器，就是指遍历BeanPostProcessor的所有实现类，并调用BeanPostProcessor自己的2个接口方法(中的任意一个)
+事实上BeanPostProcessor还有许多实现子类，比如CommonAnnotationBeanPostProcesser，AutowiredAnnotationBeanPostProcesser，InstantiationAwareBeanPostProcessor等等。
+每个子类都有自己私有的方法。spring在bean创建/初始化的过程中，有许多次遍历了(List<BeanPostProcessor>)beanPostProcessors, 然后选择了特定的实现子类，执行了特定的子类私有方法。
+这个过程大约有9次(或以上)，整个过程遍布了整个bean生命周期，从扫描解析，到自动装配，回调等待。
+=========
+关于spring boot AOP
+springFramework中默认spring.aop.proxy-target-class = false，所以接口默认jdk动态代理
+springBoot2.0中默认spring.aop.proxy-target-class = true, 所以接口和类都默认cglib代理
+
+Proxy作用方法的可见域（cglib）：public、protected、default；不允许的：final、static、private
+=============
+FactoryBean是什么？
+FactoryBean是一个特殊Bean
+可以通过实现FactoryBean的getObject方法，通过FactoryBean对象，拿到getObject返回的bean(另一个bean)。
+同时getObject会把返回的java对象注册成bean。
+比如：
+@Component
+public class MyFactoryBean implements FactoryBean{
+
+    @Override
+    public Object getObject() throws Exception {
+        return new MyBean();
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return null;
+    }
+}
+
+class MyBean{
+
+}
+
+这样的代码会在单例池注册2个bean，一个是<"myFactoryBean", (MyBean) object>, 另一个是<"&myFactoryBean", (MyBean) object>
+==========
+导入bean的四种方法
+https://blog.csdn.net/panchao888888/article/details/82882279
+
+1. @Import(MyBean.class) 注解，注入MyBean
+2. @ComponentScan("gxj.study")、@SpringBootApplication(scanBasePackages = {"gxj.study.config"}) 注解，注入扫描的包下所有@Component
+3. FactoryBean生成
+tips：1.FactoryBean不能注入getObject的bean对象（因为注入时未实例化），只能注入FactoryBean本身
+2. 当FactoryBean和@Component共存时，对目标Class会有2个不同bean实例，分别存在单例池和factoryBeanObjectCache中。分别通过beanName和factoryBeanObjectCache获取（applicationContext.getBean)
+3. 当FactoryBean和@Component共存时, 注入属性的类型无论写Bean或者FactoryBean，最后都会注入Bean对象（单例池中的那个）
+4. FactoryBean的getObject的Bean对象会在首次getBean时创建，并纳入factoryBeanObjectCache的管理中。
+5. FactoryBean的getBean，会判断beanName是否包含"&"前缀、以及instance.class是否是factoryBean，决定是从单例池还是factoryBeanObjectCache中获取bean实例
+3. ImportSelector的实现类注入
+	注入beanName为从包名开始的全路径，如com.xxx.xxx.MyBean
+	当与@Component共存时，不会注入“com.xxx.xxx.MyBean”，只会注入"myBean"
+	当与ImportBeanDefinitionRegistrar共存时，会注入2个Bean实例
+4. ImportBeanDefinitionRegistrar的实现类注入
+	与@Component一样，如果同时存在，不允许注入同名Bean。注入不同名的Bean会在单例池注入2个实例，并且无法通过.class获取（报bean类型的实例不唯一错误）。
+=============
+@Resource
+后置处理器：CommonAnnotationBeanPostProcessor
+@Autowired
+后置处理器：AutowiredAnnotationBeanPostProcessor
+
+两次 getSingleton,
+第一次：从单例池中获取单体 || 从singletonFactories缓存(bean处于创建中状态)中获取java对象
+第二次：创建新对象（createBean)
+
+原型默认不支持循环引用
+
+doCreateBean方法中：
+ boolean earlySingletonExposure = (mbd.isSingleton() 
+       && this.allowCircularReferences &&
+         isSingletonCurrentlyInCreation(beanName));
+当原型时，boolen表达式是false
+
+
+singletonfactories存<beanName,生成对象的工厂方法>
+
+	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
+		Assert.notNull(singletonFactory, "Singleton factory must not be null");
+		synchronized (this.singletonObjects) {
+			if (!this.singletonObjects.containsKey(beanName)) {
+				this.singletonFactories.put(beanName, singletonFactory);
+				this.earlySingletonObjects.remove(beanName);
+				this.registeredSingletons.add(beanName);
+			}
+		}
+	}
+
+正常：
+     spring首先从第一个map中拿a这个bean
+     拿不到，从第三个map当中拿a这个对象
+     拿不到，从第二个map拿a这个对象或者工厂
+     拿到之后放到第三个map，移除第二个map里面的表达式、或者工厂
+
+为什么在addSingletonFactory方法中：
+		this.earlySingletonObjects.remove(beanName);
+		this.registeredSingletons.add(beanName);
+
+
+=====
+最后一段话看了AOP之后回头再看
+===============
+1. AbstractBeanFactory line246：Object sharedInstance = getSingleton(beanName);  
+ 批注：A 获得null
+
+2. AbstractBeanFactory line318：sharedInstance = getSingleton(beanName, () -> {... return createBean(beanName, mbd, args); ...})
+
+3. DefaultSingletonBeanRegistry line215: IN METHOD - getSingleton : beforeSingletonCreation(beanName);
+批注：在判断语句中，A加入set singletonsCurrentlyInCreation【状态1】
+
+4. AbstractAutowireCapableBeanFactory line534-539 : METHOD - createBean CALL doCreateBean : 
+if (mbd.isSingleton()) {
+	instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
+}
+if (instanceWrapper == null) {
+	instanceWrapper = createBeanInstance(beanName, mbd, args);
+}
+批注1：DefaultSingletonBeanRegistry line222 singletonObject = singletonFactory.getObject(); 触发函数doGetBean函数。
+批注2：创建了A的java对象
+
+5. AbstractAutowireCapableBeanFactory  line562-563、569 ： boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences && isSingletonCurrentlyInCreation(beanName)); 与 addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+批注：代码allowCircularReferences=true写死，set中有A，布尔值为真。
+5.1 addSingletonFactory ：if (!this.singletonObjects.containsKey(beanName)) {
+				this.singletonFactories.put(beanName, singletonFactory);
+				this.earlySingletonObjects.remove(beanName);
+				this.registeredSingletons.add(beanName);//这个set不用在意
+			}
+批注：singletonFactories：{A}，earlySingletonObjects：{}，registeredSingletons：{A}【状态2】
+
+6. AbstractAutowireCapableBeanFactory line575：populateBean(beanName, mbd, instanceWrapper);
+批注：AbstractAutowireCapableBeanFactory line1378：遍历beanPostProcessors，注入属性(这里包括了CommonAnnotationBeanPostProcesser和AutowiredAnnotationBeanPostProcesser等，不同bean不一样）
+
+【重点】
+7. 注入属性B，发现B也没有，递归getSingleton，生成Bean B
+批注: singletonFactories：{A、B}，earlySingletonObjects：{}，registeredSingletons：{A、B}，singletonsCurrentlyInCreation : {A、B}【状态3】
+
+8. protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		Object singletonObject = this.singletonObjects.get(beanName);
+		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+			synchronized (this.singletonObjects) {
+				singletonObject = this.earlySingletonObjects.get(beanName);
+				if (singletonObject == null && allowEarlyReference) {
+					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+					if (singletonFactory != null) {
+						singletonObject = singletonFactory.getObject();
+						this.earlySingletonObjects.put(beanName, singletonObject);
+						this.singletonFactories.remove(beanName);
+					}
+				}
+			}
+		}
+		return singletonObject;
+	}
+
+批注：B注入属性A，getSingleton，这次 isSingletonCurrentlyInCreation(beanName) == true
+singletonFactories：{B}，earlySingletonObjects：{A}，registeredSingletons：{A、B}，singletonsCurrentlyInCreation : {A、B}【状态4】
+
+【题外话-延申】
+9. AutowiredAnnotationBeanPostProcessor的inject方法中
+	value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter); //这句调用getSingleton通过singletonFactories取了A的java对象
+	field.set(bean, value); // 这句话把属性A注入到了java对象B中。此时A的属性B还是null
+
+
+9.* AbstractAutowireCapableBeanFactory line576：exposedObject = initializeBean(beanName, exposedObject, mbd); 
+批注：这里也触发了其他后置处理器，但在这里不重要
+
+10. AbstractAutowireCapableBeanFactory line589：Object earlySingletonReference = getSingleton(beanName, false);
+批注：这里在递归B，getSingleton传的是false，只会从earlySingletonObjects里取对象，earlySingletonObjects里只有A没有B，返回null
+
+【阶段小结】
+至此，递归B的，第二次getSingleton的createBean(即调用的doCreateBean)完成，返回注入了属性的java对象B
+DefaultSingletonBeanRegistry line222 singletonObject = singletonFactory.getObject(); 触发函数doGetBean函数。
+之前A运行到这里，执行工厂方法，需要注入B，递归了B。执行到这里，成功注入A，回了B对象。
+
+11. DefaultSingletonBeanRegistry line223 ：newSingleton = true;
+批注：标记beanB创建成功。
+
+12. DefaultSingletonBeanRegistry line245：afterSingletonCreation(beanName);
+批注：在判断语句中，!this.singletonsCurrentlyInCreation.remove(beanName)，在set中移除了B
+singletonFactories：{B}，earlySingletonObjects：{A}，registeredSingletons：{A}，singletonsCurrentlyInCreation : {A、B}【状态5】
+
+13. DefaultSingletonBeanRegistry line248：addSingleton(beanName, singletonObject);
+protected void addSingleton(String beanName, Object singletonObject) {
+		synchronized (this.singletonObjects) {
+			this.singletonObjects.put(beanName, singletonObject);
+			this.singletonFactories.remove(beanName);
+			this.earlySingletonObjects.remove(beanName);
+			this.registeredSingletons.add(beanName);
+		}
+	}
+批注：此时 B 成为了一个完全体的bean
+singletonObjects : {B}, singletonFactories：{}，earlySingletonObjects：{A}，registeredSingletons：{A}，singletonsCurrentlyInCreation : {A、B}【状态6】
+
+此时，A的inject调用的getSingleton(B) 返回了B，B注入了A
+
+14. AbstractAutowireCapableBeanFactory line589：Object earlySingletonReference = getSingleton(beanName, false);
+批注：这里回到了A，getSingleton传的是false，只会从earlySingletonObjects里取对象，earlySingletonObjects里只有A，返回A
+
+15。之后与B相同
+singletonObjects : {B}, singletonFactories：{}，earlySingletonObjects：{A}，registeredSingletons：{A}，singletonsCurrentlyInCreation : {A、B}【状态6】
+批注：至此，A的第二个getSingleton走完了，获得了A的bean
+
+
+
+
+
+
+
+几次调用doCreateBean
+1. getBean(A) -> A第二次getSingleton的工厂方法 -> A注入属性B的时候，递归getBean(B）
+                       -> B第二次getSingleton的工厂方法 -> B注入属性A的时候，递归getBean(A）
+	      ->B注入属性完毕->B加入单例池->A注入属性完毕->A加入单例池
+
+
+

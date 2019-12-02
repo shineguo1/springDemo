@@ -1,0 +1,48 @@
+1. 重排序 √
+2. 各种锁（特性分类）√
+3. volatile √
+4. sychronized ⚪
+5. 线程池 ⚪
+6. ThreadLocal ⚪
+7. AQS √
+8. Reentrantlock √
+9. CAS √
+10. ConcurrentHashMap
+11. CountDownLatch
+12. Runnable & FutureTask  ⚪
+
+
+
+1 isHeldExclusively():该线程是否正在独占资源。只有用到condition才需要去实现它。
+2 tryAquire(int):独占方式。尝试获取资源，成功则返回true，失败则返回false。
+3 tryRelease(int):独占方式。尝试释放资源，成功则返回true，失败则返回false。
+4 tryAcquireShared(int):共享方式。尝试获取资源。负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。
+5 tryReleaseShared(int):共享方式。尝试释放资源，如果释放后允许唤醒后续等待结点返回true，否则返回false。
+======
+IOC:
+1. 项目启动时如何初始化bean
+2. 如何DI
+3. 如何解决依赖循环注入
+4. FactoryBean和BeanFactory
+5. FactoryBean.getObject()和普通Bean的区别
+6. PostProcesser
+
+AOP：
+1. cglib和jdk动态代理
+2. aspect和pointcut
+
+=============
+juc
+jvm
+spring
+springboot
+
+中间件
+
+spring cloud
+dubbo
+
+k8s
+docker
+
+maven 打包参数

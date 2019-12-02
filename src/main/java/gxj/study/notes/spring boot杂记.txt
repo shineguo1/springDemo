@@ -1,0 +1,12 @@
+sevlet3.0规范 
+    ->要求扫描resources/META-INF/services/javax.servlet.ServletContainerInitializer，
+    ->如果文件里的类实现了ServletContainerInitializer，则执行onStartup方法---【SPI接口】
+    ->如果类上有@HandlesTypes(xxxx.class)注释，则扫描所有xxxx.class作为set，
+	作为onStartup的第一个参数传进方法
+Spring    
+    ->SpringServletContainerInitializer实现了ServletContainerInitializer
+    ->SpringServletContainerInitializer注解@HandlesTypes(WebApplicationInitializer.class)
+    ->onStartup遍历了Set<(WebApplicationInitializer.class)>,执行了WebApplicationInitializer.onStartup方法
+    ==》所以只要按servlet3.0的规范做好配置，在spring中实现了WebApplicationInitializer类，
+	在实现类中加载上下文，实例化dispatchServlet（spring官网中的六七行方法），就可以代替xml
+
