@@ -1,0 +1,5 @@
+Alibaba Java Coding Guidelines
+MyBatis Log Plugin
+Maven Helper
+//Maven Integration
+//Maven Integration Extension
