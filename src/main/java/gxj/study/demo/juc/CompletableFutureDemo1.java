@@ -321,28 +321,30 @@ public class CompletableFutureDemo1 {
     }
 
 
+    /**
+     * 12 异常处理
+     */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void handleDemo(boolean isThrowException) {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+            sleep(300);
+            //出现异常
+            if (isThrowException) {
+                println("[in supplyAsync] 抛出异常");
+                throw new RuntimeException("测试一下异常情况");
+            }
+            println("[in supplyAsync] return hello");
+            return "hello";
+        }).handle((String ret, Throwable exception) -> {
+            if (exception != null) {
+                println("[in handle] 捕获异常，return world | e:" + exception.getMessage());
+                return "world";
+            }
+            println("[in handle] 无异常，收到result:" + ret);
+            return ret;
+        });
+        System.out.println("result:" + future.join());
+    }
 
 
     /**

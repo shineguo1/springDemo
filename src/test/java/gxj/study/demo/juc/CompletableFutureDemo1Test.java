@@ -70,5 +70,15 @@ public class CompletableFutureDemo1Test {
         new CompletableFutureDemo1().applyToEitherDemo();
     }
 
+    @Test
+    public void handleDemo1(){
+        //抛出异常
+        new CompletableFutureDemo1().handleDemo(true);
+    }
 
+    @Test
+    public void handleDemo2(){
+        //正常流程（不抛出异常）
+        new CompletableFutureDemo1().handleDemo(false);
+    }
 }
