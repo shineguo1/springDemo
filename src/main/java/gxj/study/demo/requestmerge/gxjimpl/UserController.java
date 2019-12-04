@@ -1,4 +1,4 @@
-package gxj.study.demo.requestmerge;
+package gxj.study.demo.requestmerge.gxjimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package gxj.study.demo.requestmerge;
+package gxj.study.demo.requestmerge.hystriximpl;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
  * @description
  */
 @Data
-public class User{
+public class User {
     private int id;
     private String name;
 }

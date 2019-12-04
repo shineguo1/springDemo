@@ -1,12 +1,12 @@
 package gxj.study.demo.requestmerge;
 
 import gxj.study.BaseTest;
+import gxj.study.demo.requestmerge.gxjimpl.User;
+import gxj.study.demo.requestmerge.gxjimpl.UserController;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.CountDownLatch;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by xinjie_guo on 2019/12/3.

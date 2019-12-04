@@ -1,4 +1,4 @@
-package gxj.study.demo.requestmerge;
+package gxj.study.demo.requestmerge.gxjimpl;
 
 import lombok.Data;
 
