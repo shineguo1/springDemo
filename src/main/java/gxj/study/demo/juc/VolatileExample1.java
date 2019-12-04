@@ -1,7 +1,5 @@
 package gxj.study.demo.juc;
 
-import gxj.study.demo.requestMerge.User;
-
 /**
  * @author xinjie_guo
  * @version 1.0.0 createTime:  2019/11/14 9:44
