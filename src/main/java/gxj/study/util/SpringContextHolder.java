@@ -24,7 +24,7 @@ public class SpringContextHolder implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
-        SpringContextHolder.applicationContext = applicationContext; // NOSONAR
+        SpringContextHolder.applicationContext = applicationContext;
     }
 
     /**
@@ -63,7 +63,7 @@ public class SpringContextHolder implements ApplicationContextAware {
     private static void checkApplicationContext() {
         if (applicationContext == null) {
             throw new IllegalStateException(
-                    "applicaitonContext未注入,请在applicationContext.xml中定义SpringContextHolder");
+                    "applicationContext未注入,请在applicationContext.xml中定义SpringContextHolder");
         }
     }
 

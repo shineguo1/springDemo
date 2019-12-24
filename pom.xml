@@ -56,6 +56,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.zaxxer</groupId>-->
+                    <!--<artifactId>HikariCP</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
             <scope>test</scope>
         </dependency>
 
@@ -87,16 +93,28 @@
 
 
         <!--mybatis-->
+        <!--spring-boot-starter-jdbc在mybatis-spring-boot-starter中引入了-->
         <!--<dependency>-->
-        <!--<groupId>org.mybatis.spring.boot</groupId>-->
-        <!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
-        <!--<version>1.2.0</version>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>mysql</groupId>-->
-        <!--<artifactId>mysql-connector-java</artifactId>-->
-        <!--<version>5.1.39</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>com.zaxxer</groupId>-->
+                    <!--<artifactId>HikariCP</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+            <version>2.0.1</version>
+        </dependency>
+        <!--引入数据库驱动 com.mysql.jdbc.Driver-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
 
         <!--zookeeper-->
         <dependency>
@@ -111,11 +129,11 @@
             <artifactId>spring-kafka</artifactId>
             <version>2.2.7.RELEASE</version>
         </dependency>
-            <!--<dependency>-->
-                <!--<groupId>org.apache.kafka</groupId>-->
-                <!--<artifactId>kafka-clients</artifactId>-->
-                <!--<version>1.0.0</version>-->
-            <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.apache.kafka</groupId>-->
+        <!--<artifactId>kafka-clients</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
         <dependency>
@@ -134,19 +152,19 @@
 
         <!-- cloud -->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter</artifactId>-->
-            <!--<version>2.1.0.RELEASE</version>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter</artifactId>-->
+        <!--<version>2.1.0.RELEASE</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>-->
-            <!--<version>2.1.0.RELEASE</version>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>-->
+        <!--<version>2.1.0.RELEASE</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-config</artifactId>-->
-            <!--<version></version>-->
+        <!--<groupId>org.springframework.cloud</groupId>-->
+        <!--<artifactId>spring-cloud-starter-config</artifactId>-->
+        <!--<version></version>-->
         <!--</dependency>-->
 
 
