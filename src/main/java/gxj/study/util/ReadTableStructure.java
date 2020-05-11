@@ -17,7 +17,17 @@ public class ReadTableStructure {
 
     public void initSql() {
         sql =
-   ""
+   "T_ORG_RES` (\n" +
+           "  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',\n" +
+           "  `CREATED_AT` datetime DEFAULT NULL COMMENT '创建时间',\n" +
+           "  `CREATED_BY` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT '创建者',\n" +
+           "  `UPDATED_AT` datetime DEFAULT NULL COMMENT '更新时间',\n" +
+           "  `UPDATED_BY` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT '更新者',\n" +
+           "  `IS_ACCESSIBLE` varchar(1) CHARACTER SET utf8 DEFAULT '1' COMMENT '有效状态，有效-1，无效-0',\n" +
+           "  `ORG_ID` bigint(20) NOT NULL COMMENT '机构编号',\n" +
+           "  `RES_ID` bigint(20) NOT NULL COMMENT '权限资源id',\n" +
+           "  PRIMARY KEY (`ID`)\n" +
+           ") ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '机构与权限资源关系'"
                 ;
 
         //删除第一行 create table
@@ -33,7 +43,7 @@ public class ReadTableStructure {
         int line = 0;
         for (String s : sqls) {
             //过滤key
-            if (s.trim().split(" ")[0].equals("KEY") || s.trim().split(" ")[0].equals("PRIMARY")) {
+            if (s.trim().startsWith("KEY") || s.trim().startsWith("PRIMARY KEY") || s.trim().startsWith("UNIQUE KEY") || s.trim().startsWith("FULLTEXT KEY")) {
                 continue;
             }
             //属性

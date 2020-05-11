@@ -1,0 +1,11 @@
+HostConfig.java#deployApps
+```
+ // Deploy XML descriptors from configBase
+        deployDescriptors(configBase, configBase.list());
+        // Deploy WARs
+        deployWARs(appBase, filteredAppPaths);
+        // Deploy expanded folders
+        deployDirectories(appBase, filteredAppPaths);
+```
+
+- HostConfig.java#deployWARs ： 扫描webapps下所有war作为应用程序部署（不扫描META-INF和WEB-INF)
