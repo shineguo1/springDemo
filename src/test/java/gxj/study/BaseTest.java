@@ -5,6 +5,7 @@ package gxj.study;
 import gxj.study.demo.spring.bean.MyBean;
 import gxj.study.util.SpringContextHolder;
 //import org.apache.ibatis.session.SqlSession;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 //import org.mybatis.spring.SqlSessionFactoryBean;
@@ -12,6 +13,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,7 +26,8 @@ public class BaseTest {
 
 	@Test
 	public void contextLoads() {
-	}
+//        Assert.assertEquals();
+    }
 
 //	@Test
 //    public void testAspect1(){
@@ -33,6 +38,13 @@ public class BaseTest {
 //    public void testAspect2() throws Exception {
 //        bService.func2();
 //    }
+//
+   @Test
+    public void someTest() throws Exception {
+       Object[] objectArray = new Long[1];
+//       objectArray[0] = "I don't fit in"; // Throws ArrayStoreException
+
+    }
 
 //    @Autowired
 //    MyInvocationHandler invocation;

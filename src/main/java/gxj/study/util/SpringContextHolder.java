@@ -9,6 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import java.util.List;
+
 /**
  * @author xinjie_guo
  * @version 1.0.0 createTime:  2019/11/4 16:28

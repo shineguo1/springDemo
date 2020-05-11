@@ -7,7 +7,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-        (scanBasePackages = {"gxj.study.util"})
+        (scanBasePackages = {"gxj.study"})
 @EnableAspectJAutoProxy(proxyTargetClass = false)
 @Import(AppConfig.class)
 public class SpringbootActuatorApplication {

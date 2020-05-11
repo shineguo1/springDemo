@@ -2,7 +2,7 @@ package gxj.study.demo.spring.service;
 
 import gxj.study.demo.spring.PersonInterface;
 import gxj.study.util.SpringContextHolder;
-//import org.apache.ibatis.annotations.Mapper;
+//import org.apache.ibatis.annotations.mapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
  * @description
  */
 @Component("proxyService")
-//@Mapper
+//@mapper
 public class PersonServiceImpl implements PersonInterface {
 //    @Autowired
 //    MyFactoryBean myBean;
     public PersonServiceImpl(){
-        System.out.println("PersonServiceImpl构造方法");
+        System.out.println("PersonServiceImpl构造方法1");
     }
 
     @Override
