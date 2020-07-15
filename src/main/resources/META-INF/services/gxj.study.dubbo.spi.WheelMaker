@@ -1,0 +1,3 @@
+#dubbo spi 也可写在  ../META-INF/dubbo里，缓存为 key - value。
+adaptiveWheelMaker = gxj.study.dubbo.spi.impl.AdaptiveWheelMaker
+michelinWheelMaker = gxj.study.dubbo.spi.impl.MichelinWheelMaker

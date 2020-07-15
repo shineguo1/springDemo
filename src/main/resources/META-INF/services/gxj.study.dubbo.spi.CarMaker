@@ -1,0 +1,2 @@
+#dubbo spi 也可写在  ../META-INF/dubbo里，缓存为 key - value。
+raceCarMaker = gxj.study.dubbo.spi.impl.RaceCarMaker

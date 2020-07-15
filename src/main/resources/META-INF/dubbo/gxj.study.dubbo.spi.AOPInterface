@@ -1,0 +1,2 @@
+#dubbo spi - 默认缓存为 key = 类名全小写
+gxj.study.dubbo.spi.impl.AnotherWrapper
