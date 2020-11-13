@@ -31,6 +31,34 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
+        <!-- Spring boot Cache-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <!--for caffeine cache-->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>2.7.0</version>
+        </dependency>
         <!--<dependency>-->
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-starter-security</artifactId>-->
@@ -57,10 +85,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>com.zaxxer</groupId>-->
-                    <!--<artifactId>HikariCP</artifactId>-->
-                <!--</exclusion>-->
+            <!--<exclusion>-->
+            <!--<groupId>com.zaxxer</groupId>-->
+            <!--<artifactId>HikariCP</artifactId>-->
+            <!--</exclusion>-->
             <!--</exclusions>-->
             <scope>test</scope>
         </dependency>
@@ -95,17 +123,17 @@
         <!--mybatis-->
         <!--spring-boot-starter-jdbc在mybatis-spring-boot-starter中引入了-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>com.zaxxer</groupId>-->
-                    <!--<artifactId>HikariCP</artifactId>-->
-                <!--</exclusion>-->
+            <!--<exclusion>-->
+            <!--<groupId>com.zaxxer</groupId>-->
+            <!--<artifactId>HikariCP</artifactId>-->
+            <!--</exclusion>-->
             <!--</exclusions>-->
             <version>2.0.1</version>
         </dependency>
@@ -172,8 +200,16 @@
         <!--<artifactId>spring-cloud-starter-config</artifactId>-->
         <!--<version></version>-->
         <!--</dependency>-->
-
-
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>nacos-config-spring-boot-starter</artifactId>
+            <version>0.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.boot</groupId>
+            <artifactId>nacos-discovery-spring-boot-starter</artifactId>
+            <version>0.2.3</version>
+        </dependency>
     </dependencies>
 
     <build>
