@@ -58,7 +58,7 @@ public class RobotTest extends BaseTest{
     public void Dubbo_SPI_Weapon_sayHello() throws Exception {
         ExtensionLoader<Weapon> extensionLoader =
                 ExtensionLoader.getExtensionLoader(Weapon.class);
-        Gun gun = (Gun) extensionLoader.getExtension("myGun");
+        Gun gun = (Gun) extensionLoader.getExtension("gun");
         gun.sayHello();
     }
 
