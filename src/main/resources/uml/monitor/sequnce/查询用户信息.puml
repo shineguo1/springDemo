@@ -1,0 +1,46 @@
+
+@startuml
+
+actor 用户
+box "Monitor-Message" #LightGreen
+participant Output
+participant AmsUserBiz
+end box
+
+box "Monitor-Statiscs" #LightBlue
+participant MonitorCommonConfigInfo
+end box
+
+box "Ams" #LightGray
+participant amsApi
+end box
+
+
+title 根据用户编号查询用户加密信息
+activate Output
+Output -> AmsUserBiz : 根据用户编号查用户信息
+activate AmsUserBiz
+AmsUserBiz-> AmsUserBiz: 查缓存
+
+alt 缓存未命中 1-100
+    AmsUserBiz -> MonitorCommonConfigInfo : 查询用户加密信息
+    activate MonitorCommonConfigInfo
+    MonitorCommonConfigInfo -> amsApi : 查询用户加密信息
+    activate amsApi
+    MonitorCommonConfigInfo <-- amsApi  : 返回加密信息
+    deactivate amsApi
+    AmsUserBiz <-- MonitorCommonConfigInfo : 返回加密信息
+    deactivate MonitorCommonConfigInfo
+    AmsUserBiz-> AmsUserBiz: 缓存60分钟
+else 101-1000
+    AmsUserBiz-> AmsUserBiz: 缓存60分钟
+else >1000
+    AmsUserBiz-> AmsUserBiz: 缓存60分钟
+end
+Output <-- AmsUserBiz : 返回缓存信息
+deactivate AmsUserBiz
+Output -> Output : 解密
+Output -> Output : 发送邮件/电话
+
+
+@enduml

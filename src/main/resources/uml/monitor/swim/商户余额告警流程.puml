@@ -1,0 +1,25 @@
+
+@startuml
+title 商户余额规则告警流程\n
+|#white|Monitor-Statiscs|
+start
+'note right: 定时生成商\n户余额规则
+:16:00 定时任务，生成若干商户余额规则;
+|dpc|
+:查询商户余额预警信息;
+|Monitor-Statiscs|
+while (遍历查询结果) is (i < size)
+    :生成监控规则;
+    note right
+        每天16:00告警一次
+        规则条件包含：
+        商户号、付款类型、
+        账户余额、授信额度、
+        可用余额、可用天数、
+        三天预警值
+    end note
+:写入数据库;
+endwhile (i >= size)
+stop
+
+@enduml

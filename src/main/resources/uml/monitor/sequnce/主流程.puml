@@ -1,0 +1,27 @@
+@startuml
+group 定时同步任务
+scheduled->scheduled : 2分钟删除一次
+note right
+规则缓存的key = 规则编号 +　更新时间
+删除应用程序中存在，数据库中不存在的规则（删除被修改的旧规则）
+end note
+scheduled->scheduled : 3分钟新增一次
+note right : 添加应用程序中不存在，数据库中存在的规则（同步新增/更新规则）\n删除超过规则设置的间隔时间3分钟还没执行的规则(规则放在线程池中周期执行，超时未执行->认为它出错->从应用中删除，等待重新添加)
+end
+
+group 某告警规则执行过程
+scheduled->rule : 规则通过scheduleThread周期性执行，\n调用rule检查是否触发规则
+rule-> rule : 检查规则是否下线
+rule->rule: 检查规则是否在认领后休眠时间区间内
+rule->rule: 查询es
+rule -> filter : 调用filter检查是否满足告警条件
+
+filter->filter : 判断是否下线
+filter->filter:判断是否在规则启用时间区或恢复告警时间区间
+note right : “恢复告警”暂时是多余的功能
+filter->filter:判断es查询结果是否达到告警阈值
+filter->message : 发送电话/邮件/微信告警
+message-->filter :
+filter->filter:告警记录入库
+end
+@enduml

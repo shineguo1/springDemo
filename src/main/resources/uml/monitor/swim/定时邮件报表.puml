@@ -1,0 +1,16 @@
+
+@startuml
+|Monitor-Statiscs|
+start
+:触发定时任务;
+:设置查询条件;
+|DPC / ES|
+:查询数据;
+note  left : 123
+|Monitor-Statiscs|
+:组装Email模板;
+:查询配置的收件人;
+|Monitor-Message|
+:发送邮件;
+stop
+@enduml

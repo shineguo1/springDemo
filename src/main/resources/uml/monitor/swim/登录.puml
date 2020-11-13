@@ -1,0 +1,31 @@
+
+@startuml
+|Browser|
+start
+:输入用户名密码;
+:加密请求;
+|Monitor-Statiscs|
+if (验签) then (N)
+    :登录失败;
+else (Y)
+    |Monitor-Statiscs|
+    : 组装请求参数;
+    |ams|
+    : 校验用户名密码;
+    |Monitor-Statiscs|
+    if (是一级管理员？) then (Y)
+    else (N)
+        if (拥有登录权限？) then (Y)
+        else (N)
+            : 登录失败;
+            stop
+        endif
+    endif
+    if (用户状态正常？) then (Y)
+        :登录成功;
+    else (N)
+        :登录失败;
+    endif
+endif
+stop;
+@enduml

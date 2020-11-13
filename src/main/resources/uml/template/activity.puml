@@ -1,0 +1,20 @@
+@startuml
+
+(*)  --> "check input"
+If "input is verbose" then
+--> [Yes] "turn on verbosity"
+--> "run command"
+else
+--> "run command"
+
+note right
+This note is on several
+//lines// and can
+contain <b>HTML</b>
+====
+* Calling the method ""foo()"" is prohibited
+end note
+
+Endif
+-->(*)
+@enduml

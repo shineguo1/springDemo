@@ -1,0 +1,17 @@
+
+@startuml
+|Browser|
+start
+note right:线上报表
+:输入查询条件;
+|#white|Monitor-Statiscs|
+:组装请求参数
+ / es查询语句;
+|DPC / ES|
+:查询数据;
+|Monitor-Statiscs|
+:组织返回结果;
+|Browser|
+:展示报表;
+stop
+@enduml

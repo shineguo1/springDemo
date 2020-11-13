@@ -1,0 +1,26 @@
+
+@startuml
+|Monitor-Statiscs/Monitor-filter|
+start
+note right:发送告警
+:调用发送信息服务;
+|Monitor-Message|
+if (发送邮件?) then (Y)
+    :根据用户编号查询\n邮箱(guava cache);
+    |Monitor-Message|
+    :发送邮件;
+    if(发送成功) then (N)
+        :备用邮箱发送邮件;
+     else (Y)
+    endif
+else if (发送微信?) then(Y)
+    :调用企业微信API;
+else if (拨打电话?) then(Y)
+    |Monitor-Message|
+    :根据用户编号查询\n手机号(guava cache);
+    :调用集团API超市语音告警服务;
+else (N)
+:无效发送方式;
+endif
+stop
+@enduml
