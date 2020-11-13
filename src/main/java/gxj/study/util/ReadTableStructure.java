@@ -17,22 +17,30 @@ public class ReadTableStructure {
 
     public void initSql() {
         sql =
-   "T_ORG_RES` (\n" +
-           "  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',\n" +
-           "  `CREATED_AT` datetime DEFAULT NULL COMMENT '创建时间',\n" +
-           "  `CREATED_BY` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT '创建者',\n" +
-           "  `UPDATED_AT` datetime DEFAULT NULL COMMENT '更新时间',\n" +
-           "  `UPDATED_BY` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT '更新者',\n" +
-           "  `IS_ACCESSIBLE` varchar(1) CHARACTER SET utf8 DEFAULT '1' COMMENT '有效状态，有效-1，无效-0',\n" +
-           "  `ORG_ID` bigint(20) NOT NULL COMMENT '机构编号',\n" +
-           "  `RES_ID` bigint(20) NOT NULL COMMENT '权限资源id',\n" +
-           "  PRIMARY KEY (`ID`)\n" +
-           ") ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '机构与权限资源关系'"
-                ;
+"CREATE TABLE `T_MONITOR_WHITE_MEMBER_INFO` (\n" +
+        "  `ID` int(11) NOT NULL AUTO_INCREMENT,\n" +
+        "  `WHITE_MEMBER_NO` varchar(32) DEFAULT NULL COMMENT '商户白名单编号',\n" +
+        "  `MEMBER_ID` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '商户ID',\n" +
+        "  `MEMBER_NAME` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '商户名称',\n" +
+        "  `WHITE_TYPE` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '白名单类型 WARN',\n" +
+        "  `SELLER_IS_NOT_EMAIL` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '销售不发邮件  YES NO',\n" +
+        "  `SELLER_IS_NOT_MOBILE` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '销售不发短信',\n" +
+        "  `BEGIN_TIME` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '开始时间',\n" +
+        "  `END_TIME` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '结束时间',\n" +
+        "  `DELETE_FLAG` varchar(16) DEFAULT 'NORMAL' COMMENT '删除标识',\n" +
+        "  `CREATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
+        "  `CREATED_BY` varchar(32) DEFAULT '' COMMENT '创建人',\n" +
+        "  `UPDATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',\n" +
+        "  `UPDATED_BY` varchar(32) DEFAULT '' COMMENT '更新人',\n" +
+        "  PRIMARY KEY (`ID`),\n" +
+        "  KEY `MEMBER_ID_INDEX` (`MEMBER_ID`)\n" +
+        ") ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COMMENT='告警商户白名单配置信息表';\n" +
+        "\n";
+        ;
 
         //删除第一行 create table
-        if(sql.split("\n")[0].endsWith("(")){
-            sql = sql.replace(sql.split("\n")[0],"");
+        if (sql.split("\n")[0].endsWith("(")) {
+            sql = sql.replace(sql.split("\n")[0], "");
         }
     }
 
@@ -49,7 +57,7 @@ public class ReadTableStructure {
             //属性
             TableAttribute t = new TableAttribute();
             t.name = s.split("`")[1];
-            if(s.contains("COMMENT")) {
+            if (s.contains("COMMENT")) {
                 t.desc = s.split("COMMENT")[1].split("'")[1];
             }
             t.type = s.trim().split(" ")[1];
@@ -64,16 +72,16 @@ public class ReadTableStructure {
             }
             if (s.contains("DEFAULT")) {
                 String s1 = s.split("DEFAULT")[1];
-                if(s1.trim().startsWith("'")){
+                if (s1.trim().startsWith("'")) {
                     t.defaultValue = s1.split("'")[1];
-                }else {
+                } else {
                     t.defaultValue = s1.split(" ")[1];
                 }
             } else {
                 t.defaultValue = "";
             }
             t.print();
-            line ++;
+            line++;
         }
         System.out.println(line + "行");
 
@@ -91,23 +99,23 @@ class TableAttribute {
     /**
      * 字段名
      */
-    String name="";
+    String name = "";
     /**
      * 字段说明
      */
-    String desc="";
+    String desc = "";
     /**
      * 默认值
      */
-    String defaultValue="";
+    String defaultValue = "";
     /**
      * 类型
      */
-    String type="";
+    String type = "";
     /**
      * 是否为空
      */
-    String nullable="";
+    String nullable = "";
 
     public void print() {
         System.out.println(name + "\t" + desc + "\t" + defaultValue + "\t" + type + "\t" + nullable);
