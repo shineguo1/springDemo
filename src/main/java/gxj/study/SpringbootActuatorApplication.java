@@ -1,5 +1,6 @@
 package gxj.study;
 
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import gxj.study.config.AppConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Import;
         (scanBasePackages = {"gxj.study"})
 @EnableAspectJAutoProxy(proxyTargetClass = false)
 @Import(AppConfig.class)
+@NacosPropertySource(dataId = "example", groupId = "",autoRefreshed = true)
 public class SpringbootActuatorApplication {
 
     public static void main(String[] args) throws Exception {
