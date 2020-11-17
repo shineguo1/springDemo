@@ -1,35 +1,51 @@
 @startuml
-skinparam linetype ortho
-
-(*) -down-> "clone repository"
-note right
-A:git clone url/to/repository
-scp -p url/to/hooks/commit_msg repository/.git/hooks
+|第一道|
+partition partA {
+start
+floating note left:浮动提示信息\n使用floating note\n left|right:提示内容
+if(is has step1) then(step 1)
+#pink:step 1;
+-[#blue]->
+detach
+note left
+使用detach 将箭头
+分离了
+endnote
+else(进入步骤2)
+:step 2<
+-[#green,dotted]->//**wangtingwei**//;
+endif
+}
+|第二道|
+partition partb {
+repeat
+:step 3>
+-[#DD3322,dashed]->description;
+note left
+This note is on several
+//lines// and can
+contain <b>HTML</b>
+====
+* Calling the method ""step()""
 end note
--down->[get an assignment] "coding"
--down-> "commit locally"
+repeatwhile(executeCount<5)
+:step 4|
+|#blue|第三道|
+-[#gray,bold]->加粗测试;
+:step 5]
+fork
+:step 6}
+forkagain
+#red:step 7;
+forkagain
+#pink:step 8;
 note right
-B:git add xxx
-git commit
-end note
--down-> "review"
-note right
-C:git push origin refs/for/<branch>
-end note
-if "" then
-  -left->[rejected] "rework"
-  -up-> "recommit"
-'note left
-'D:git add xxx
-'git commit --amend
-'end note
-  -right-> "review"
-else
-  --right-->[approved] "submit"
-note right: E:click "submit" on on corresponding gerrit page
-  -up-> "update local repository"
-note right
-F:git pull --rebase
-end note
-  -left->[get another task(a new cycle)] "coding"
+使用fork
+forkagain
+endfork
+并行处理.
+endnote
+endfork
+}
+stop
 @enduml

@@ -1,0 +1,26 @@
+@startuml
+|monitor-message|
+start
+note right:项目启动、每整点触发
+|monitor-statiscs|
+:查询所有企业微信应用;
+|monitor-message|
+:查询结果集加入重试队列，重试次数3次;
+while(重试队列非空？) is (Y)
+    :RESTful API 查询token;
+    if(查询结果非空?) then (Y)
+        :移出重试队列;
+        :token加入缓存;
+    else (N)
+        if(重试次数>0) then (Y)
+            :重试次数减1;
+            :加入重试队列，延迟1分钟重试;
+        else (N)
+            :打印错误日志;
+            :移出重试队列;
+        endif;
+    endif
+end while(N)
+:企业微信token刷新完成;
+stop
+@enduml

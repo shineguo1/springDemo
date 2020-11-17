@@ -1,0 +1,60 @@
+
+@startuml
+title 商户余额规则告警流程\n
+
+|monitor-schedule|
+start
+:线程池:某统计类规则任务运行;
+:更新redis hash
+   key为规则id
+value为当前时间;
+note right
+用于记录运行中任务
+和最后执行时间
+end note
+
+|monitor-rule|
+if(规则是否下线?) then (Y)
+    :规则已下线,不予执行;
+    stop;
+else if(规则是否在休眠时间内) then(Y)
+    :同规则任务已认领,不予执行;
+    stop;
+endif
+:提取规则信息,查询ES;
+if(检查返回结果) then(N)
+    :返回结果为0或格式不对;
+    note left
+    格式错误包括
+    http网络错误
+    和es查询错误
+    end note
+    stop;
+else(Y)
+    |monitor-filter|
+
+    if(是否在规则有效时间区间内?) then (N)
+        :不在规则有效时间内,不予执行;
+        stop;
+    else (Y)
+        :生成展示信息编号;
+        fork
+            :邮件;
+            :发送通知|
+        fork again
+            :企业微信;
+            :发送通知|
+        fork again
+            :电话;
+            :发送通知|
+        end fork
+        note right: 详见message模块-发送告警
+        :生成告警记录编号;
+        |monitor-statiscs|
+        :记录告警记录 -> mysql;
+        :记录展示信息 -> mysql;
+        stop;
+    endif
+endif
+
+@enduml

@@ -1,25 +1,44 @@
 
 @startuml
 title 商户余额规则告警流程\n
-|#white|Monitor-Statiscs|
+
+|#white|monitor-statiscs|
 start
 'note right: 定时生成商\n户余额规则
-:16:00 定时任务，生成若干商户余额规则;
-|dpc|
-:查询商户余额预警信息;
-|Monitor-Statiscs|
-while (遍历查询结果) is (i < size)
-    :生成监控规则;
-    note right
-        每天16:00告警一次
-        规则条件包含：
-        商户号、付款类型、
-        账户余额、授信额度、
-        可用余额、可用天数、
-        三天预警值
-    end note
-:写入数据库;
-endwhile (i >= size)
-stop
+:16:00 定时任务:
+从dpc查询数据,生成
+若干商户余额监控规则;
+|monitor-schedule|
 
+:16:03 逐条运行商户余额规则任务;
+
+|monitor-rule|
+if(可用余额 < 三天预警值) then (Y)
+    :规则碰撞成功;
+else (N)
+    :规则碰撞失败;
+stop;
+endif
+
+|monitor-filter|
+:是否在规则开始时间内;
+if(商户是否在"白名单-预警"内?) then (N)
+    |monitor-statiscs|
+    :查询商户信息(cif);
+    :查询销售信息(crm);
+    |monitor-filter|
+    if(商户在"白名单-通知"中 && 销售邮件开关为否) then (Y)
+        :收件人仅为规则中的收件人;
+    else (N)
+        :收件人为规则中的收件人+销售;
+    endif;
+    :通过vm模板生成告警邮件内容;
+else (Y)
+:不触发告警;
+stop;
+endif;
+
+|monitor-message|
+:发送邮件告警;
+stop;
 @enduml

@@ -1,0 +1,21 @@
+
+@startuml
+start
+note right:每300毫秒执行一次，消费redis队列中待新增任务
+repeat
+:取出redis队列内首项;
+note right:redis队列记录等待加载进应用程序的新规则
+:查redis hash获得上次执行时间;
+if(          无执行记录 <b>或</B>\n超过间隔时间3分钟未执行) then (Y)
+            :尝试在当前应用实例删除任务;
+            note right:若已有任务意外停止，删除后重新添加;
+            :在当前应用实例添加新任务;
+            :在redis hash中缓存该任务;
+            note right
+            设上次执行时间（value）为当前时间
+            end note
+        endif
+repeatwhile(sleep(300))
+stop
+
+@enduml

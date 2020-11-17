@@ -1,0 +1,21 @@
+
+@startuml
+start
+note right:每2分钟执行一次，同步删除过时任务
+:查询所有监控规则;
+note right:map.key= 规则id+更新时间
+:获取应用程序中所有任务;
+note right:任务key = 规则id+更新时间
+while(遍历所有任务) is (Y)
+    if(监控规则不包含该任务) then (Y)
+        :从缓存和线程池中删除该任务;
+        note right:任务已删除或更新
+        :从redis的hash中删除该任务;
+        note right:redis hash记录运行中规则id
+    else (N)
+    endif
+endwhile
+:同步删除完成;
+stop
+
+@enduml

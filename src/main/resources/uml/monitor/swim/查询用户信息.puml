@@ -12,7 +12,7 @@ if (命中缓存?) then (N)
     :查询用户信息;
     |Monitor-Message|
     :更新缓存;
-    else(y)
+    else (y)
 endif
 |Monitor-Message|
 :返回用户信息;

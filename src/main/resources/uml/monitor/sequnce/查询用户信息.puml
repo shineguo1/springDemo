@@ -22,7 +22,7 @@ Output -> AmsUserBiz : 根据用户编号查用户信息
 activate AmsUserBiz
 AmsUserBiz-> AmsUserBiz: 查缓存
 
-alt 缓存未命中 1-100
+alt 缓存未命中
     AmsUserBiz -> MonitorCommonConfigInfo : 查询用户加密信息
     activate MonitorCommonConfigInfo
     MonitorCommonConfigInfo -> amsApi : 查询用户加密信息
@@ -31,10 +31,6 @@ alt 缓存未命中 1-100
     deactivate amsApi
     AmsUserBiz <-- MonitorCommonConfigInfo : 返回加密信息
     deactivate MonitorCommonConfigInfo
-    AmsUserBiz-> AmsUserBiz: 缓存60分钟
-else 101-1000
-    AmsUserBiz-> AmsUserBiz: 缓存60分钟
-else >1000
     AmsUserBiz-> AmsUserBiz: 缓存60分钟
 end
 Output <-- AmsUserBiz : 返回缓存信息

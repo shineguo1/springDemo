@@ -1,0 +1,39 @@
+
+@startuml
+start
+note right:每3分钟执行一次，同步新增新任务
+:添加redis锁;
+:查询所有监控规则;
+note right:map.key= 规则id+更新时间
+while(遍历所有规则) is (Y)
+    :查询redis hash;
+    note right:缓存所有应用实例运行中任务\nkey为规则id, value为最后执行时间
+    if(命中缓存) then (N)
+        :往redis队列中添加该任务;
+        note right
+        待添加任务列表（多台应用实例消费）
+        新任务和更新任务(旧任务更新，会同步从redis hash中删除）
+        end note
+    else (Y)
+    endif
+endwhile (N)
+
+while(遍历redis hash) is (Y)
+    if(规则集合包含hash key) then(Y)
+        if(                   无执行记录 <b>或</B>\n当前时间-上次执行时间>间隔时间+3min) then (Y)
+            :发现新任务 或 任务意外停止运行;
+            :尝试在当前应用实例删除任务;
+            note right:可能存在于其他应用实例;
+            :往redis队列中添加该任务;
+            note right
+            需重新加载任务（加载时会二次检验）
+            end note
+        endif
+    else (N)
+    endif
+endwhile (N)
+:redis队列同步更新完成;
+:解redis锁;
+stop
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+title 认领/分配告警记录
+|browser|
+start
+:选择告警记录处理人/
+:填写规则休眠时间/
+|monitor-statiscs|
+:修改告警记录状态;
+:新增告警处理记录;
+:缓存规则休眠时间->redis;
+note right:休眠时间内规则\n不会重复触发
+stop
+@enduml

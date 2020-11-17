@@ -1,8 +1,8 @@
 
 @startuml
 |Browser|
+title 线上报表
 start
-note right:线上报表
 :输入查询条件;
 |#white|Monitor-Statiscs|
 :组装请求参数
