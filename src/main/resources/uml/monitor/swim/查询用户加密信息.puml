@@ -7,14 +7,14 @@ note right:根据用户编号\n查询用户信息
 |Monitor-Message|
 if (命中缓存?) then (N)
     |Monitor-Statiscs|
-    :查询用户信息;
+    :查询用户加密信息;
     |ams|
-    :查询用户信息;
+    :查询用户加密信息;
     |Monitor-Message|
     :更新缓存;
     else (y)
 endif
 |Monitor-Message|
-:返回用户信息;
+:返回用户加密信息;
 stop
 @enduml
