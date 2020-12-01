@@ -17,4 +17,8 @@ endif
 |Monitor-Message|
 :返回用户加密信息;
 stop
+
+'输入：用户编号
+'输出：用户加密信息（诸如邮箱、手机号）
+'描述：message项目根据AMS用户编号查询邮箱、手机号，用于发送邮件、拨打电话。设置guava缓存。
 @enduml

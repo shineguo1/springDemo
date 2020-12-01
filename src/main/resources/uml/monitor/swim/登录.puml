@@ -2,7 +2,7 @@
 @startuml
 |Browser|
 start
-:输入用户名密码;
+:输入用户名密码/
 :加密请求;
 |Monitor-Statiscs|
 if (验签) then (N)
@@ -28,4 +28,8 @@ else (Y)
     endif
 endif
 stop;
+
+'输入：用户名、密码
+'输出：登录成功/失败。
+'描述：监控平台用户登录。正常状态的ams一级管理员或在监控平台内加过权限的ams用户可以访问监控平台。
 @enduml
