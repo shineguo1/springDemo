@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
  * @version 1.0.0 createTime:  2020/9/16 11:06
  * @description
  */
-@RestController
+//@RestController
 @RequestMapping("/nacos/provider")
 public class ProviderConfig {
     @NacosInjected

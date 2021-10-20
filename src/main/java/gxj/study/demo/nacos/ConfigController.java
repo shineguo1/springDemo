@@ -4,7 +4,9 @@ import com.alibaba.nacos.api.config.annotation.NacosValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+
+//TODO: 关闭nacos
+//@RestController
 @RequestMapping("/config")
 public class ConfigController {
 

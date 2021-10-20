@@ -50,13 +50,13 @@ public class DBScript3 {
         String getKey(String attributeName);
     }
 
-    public static void main(String[] args) throws IOException {
-        DECRYPT_METHOD = AESUtil::decrypt;
-        KEY_METHOD = DBScript3::lineToHump;
-        String filePath = "C:\\Users\\xinjie_guo\\Desktop\\T_DATA_LEDGER_INFO.json";
-        String tableName = "T_DATA_LEDGER_INFO";
-        execute(filePath, tableName);
-    }
+//    public static void main(String[] args) throws IOException {
+//        DECRYPT_METHOD = AESUtil::decrypt;
+//        KEY_METHOD = DBScript3::lineToHump;
+//        String filePath = "C:\\Users\\xinjie_guo\\Desktop\\T_DATA_LEDGER_INFO.json";
+//        String tableName = "T_DATA_LEDGER_INFO";
+//        execute(filePath, tableName);
+//    }
 
     private static void execute(String filePath, String tableName) throws IOException {
         String jsonString = DBScript3.readFileByBytes(filePath);
@@ -166,5 +166,9 @@ public class DBScript3 {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(lineToHump("T_CUSTOMER_OPERATOR_INFO"));
     }
 }

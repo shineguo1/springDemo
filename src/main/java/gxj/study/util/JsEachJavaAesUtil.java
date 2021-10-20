@@ -1,5 +1,6 @@
 package gxj.study.util;
 
+import gxj.study.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
@@ -128,8 +129,12 @@ public class JsEachJavaAesUtil {
      * @return 解密后的string
      * @throws Exception
      */
-    public static String aesDecrypt(String encryptStr, String decryptKey) throws Exception {
-        return StringUtils.isEmpty(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
+    public static String aesDecrypt(String encryptStr, String decryptKey)  {
+        try {
+            return StringUtils.isEmpty(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
+        } catch (Exception e) {
+            throw  new RuntimeException();
+        }
     }
 
     /**
@@ -140,7 +145,14 @@ public class JsEachJavaAesUtil {
         System.out.println("admin 加密后：" + encrypt);
         String encrypt2 = aesEncrypt("孟*", KEY);
         System.out.println("admin123 加密后：" + encrypt2);
-        String decrypt = aesDecrypt("+raQgjnB44Kmrwo5yHYHYPwGf9QZQ4Bx/AcS0nyhzU8=", KEY);
+        String decrypt = aesDecrypt("vn3/3PUYwr710Cdm5fX4Gw==", KEY);
         System.out.println("解密后：" + decrypt);
+
+
+
+//        System.out.println(JsEachJavaAesUtil.aesDecrypt("h/m/8YtpHJYwVLGxPgk3IMEVR8Towy7BhkTykd2b+uc="));
+//        System.out.println(JsEachJavaAesUtil.aesDecrypt("OPO81tmiyauPeDw1cuAK6w=="));
+//        System.out.println(JsEachJavaAesUtil.aesDecrypt("HTuGoiciTxReRjtkYXoIEc/1lLnTypiWzKKkuzXHahw="));
+        System.out.println(JsEachJavaAesUtil.aesDecrypt("HTuGoiciTxReRjtkYXoIEc/1lLnTypiWzKKkuzXHahw="));
     }
 }

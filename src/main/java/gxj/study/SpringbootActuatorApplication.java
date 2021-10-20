@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Import;
         (scanBasePackages = {"gxj.study"})
 @EnableAspectJAutoProxy(proxyTargetClass = false)
 @Import(AppConfig.class)
-@NacosPropertySource(dataId = "example", groupId = "",autoRefreshed = true)
+//关闭nacos注解
+//@NacosPropertySource(dataId = "example", groupId = "",autoRefreshed = true)
 public class SpringbootActuatorApplication {
 
     public static void main(String[] args) throws Exception {

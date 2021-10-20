@@ -2,10 +2,6 @@ package gxj.study.leetCode;
 
 
 import com.alibaba.fastjson.JSON;
-import org.apache.poi.ss.formula.functions.T;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 class Node {
     public int val;
@@ -69,6 +65,36 @@ public class Solution {
 ////            if()
 ////        }
 //    }
+
+    public int uniquePaths(int m, int n) {
+        //可以向右走n-1步，可以向下走m-1步
+        //等价于将向下走的步数插入向右走的步数之间（包括两端）
+        //排列组合
+        int x = n - 1;
+        int y = m - 1;
+        if (m == 0 || n == 0) return 0;
+        return calculate(x + y, y);
+
+    }
+
+    int calculate(int x, int count) {
+        int ret = 1;
+        int diff = 1;
+        while (count-- > 0) {
+            ret *= x;
+            ret /= diff;
+            x--;
+            diff++;
+        }
+        return ret;
+    }
+
+    public static void main(String[] args) {
+//        int i = new Solution().uniquePaths(10, 10);
+        System.out.println(new Solution().calculate(18, 9));
+        Double a = 0.0;
+        a.intValue();
+    }
 }
 
 class ListNode {

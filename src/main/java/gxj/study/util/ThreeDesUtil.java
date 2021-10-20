@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.beans.Introspector;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -154,12 +155,16 @@ public class ThreeDesUtil {
             return src;
         }
         byte[] decryptMode = new byte[0];
-        decryptMode = decryptMode(key.getBytes(), Base64.decode(src));
+        try {
+            decryptMode = decryptMode(key.getBytes("UTF-8"), Base64.decode(src));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if (null == decryptMode || decryptMode.length < 1) {
-            log.error("ERROR doDecrypt PARAM: {}", src);
-//            throw new RuntimeException("数据未加密");
+//            log.error("ERROR doDecrypt PARAM: {}", src);
+            throw new RuntimeException("数据未加密");
 
-            return src;
+//            return src;
         }
         String deSrc = new String(decryptMode);
         if (StringUtils.isEmpty(deSrc)) {
@@ -332,24 +337,67 @@ public class ThreeDesUtil {
             throw new RuntimeException(e);
         }
     }
+//
+//    public static void main(String[] args) {
+////        System.out.println(doEncrypt("深圳市南山区大冲商务中心A座1502室"));
+////        System.out.println(doEncrypt("021-78778889000000"));
+////        System.out.println(doDecrypt("ELO8JVs6duoFyVWDd77Nw3I51f15szJahrFXPj5Xk+ECSR0f64oDitvSLzoKIfbN"));
+////        System.out.println(doDecrypt(" iXR35hg3rEPnoxmY6Q+T+xCKJxlXDMrsGFhYycuSsIIPBSNUGJZxUCD/jON7C8ove"));
+////        System.out.println(doDecrypt("8GPGQh8hwgruIHRVAsBGiBAa3cWIImlt"));
+////        String a = null;
+//        System.out.println("===");
+//        String s = doEncrypt("上海市崇明区城桥镇东门路378号4号楼329室（崇明区经济委员会招商服务中心）");
+//        System.out.println("T_CUSTOMER_MERCHANT_CONFIG : 1962 :");
+//        System.out.println("AGREEMENT_SEND_ADDR : "+s);
+//        System.out.println(s.length());
+////
+////        System.out.println("===");
+////        s = doEncrypt("17621539576");
+////        System.out.println("T_CUSTOMER_MERCHANT_LOGIN_INFO_HIS : 800 :");
+////        System.out.println("LOGIN_NAME : " + s);
+////        System.out.println(s.length());
+////
+////        System.out.println("===");
+////        s = doDecrypt("frVlsDOexiie8SPoz1NPRVbmtg3DoKilP4fVOqcV+KOLgS7aj3MpUg==");
+////        System.out.println("T_CUSTOMER_AGREEREL : 1592 :");
+////        System.out.println("ACCOUNT_NAME_MIX : " + EncryptStringUtil.name(s));
+////        System.out.println(s.length());
+////
+////        System.out.println("===");
+////        s = doDecrypt("tDqAoOeW/UmAWKgC8SZfCeM3kKexpb1cQZi8PqWhMu4=");
+////        System.out.println("T_CUSTOMER_OPERATOR_INFO : 5288 :");
+////        System.out.println("CUSTOMER_NAME_MIX : " + EncryptStringUtil.name(s));
+////        System.out.println(s.length());
+////
+////        System.out.println("---");
+////        s = doDecrypt("xfQW9EVBPwrP6jVtj+JB0iBmTUYeaQyRCotXYOvFqqn/h+lpoImTOPP0EJeUMK4e");
+////        System.out.println("T_CUSTOMER_OPERATOR_INFO : 5287 :");
+////        System.out.println("CUSTOMER_NAME_MIX : " + EncryptStringUtil.name(s));
+////        System.out.println(s.length());
+////
+////        System.out.println("===");
+////        s = doDecrypt("XwBDSVdDaUivYMUa28W77g==");
+////        System.out.println("T_CUSTOMER_ORG : 2998 :");
+////        System.out.println("PHONE_MIX : " + EncryptStringUtil.phone(s));
+////        System.out.println(s.length());
+////        s = doDecrypt("y4NdvotVjm4=");
+////        System.out.println("T_CUSTOMER_ORG : 2998 :");
+////        System.out.println("LEGALREPRESENTNAME_MIX : " + EncryptStringUtil.name(s));
+//
+//
+//        String x = doDecrypt("BY3EsUOlFcQ=");
+//        System.out.println(x);
+//        System.out.println(x.length());
+//    }
 
     public static void main(String[] args) {
-//        System.out.println(doEncrypt("深圳市南山区大冲商务中心A座1502室"));
+//        System.out.println(doEncrypt("chao_huang@xinyan.com"));
 //        System.out.println(doDecrypt("ELO8JVs6duoFyVWDd77Nw3I51f15szJahrFXPj5Xk+ECSR0f64oDitvSLzoKIfbN"));
 //        System.out.println(doDecrypt(" iXR35hg3rEPnoxmY6Q+T+xCKJxlXDMrsGFhYycuSsIIPBSNUGJZxUCD/jON7C8ove"));
 //        System.out.println(doDecrypt("8GPGQh8hwgruIHRVAsBGiBAa3cWIImlt"));
-        String a = null;
+//        String a = null;
 //        System.out.println(doDecrypt("iISklm8Ce4VLNap3eTwXFRFy+TFuh5/wWlZWmXBj4gQ7ebIfGj8HTKSAcafRDvuQ"));
-        System.out.println(doDecrypt("dKLVGDzhz4g="));
-//        System.out.println(doDecrypt("iISklm8Ce4VLNap3eTwXFRFy+TFuh5/wWlZWmXBj4gQ7ebIfGj8HTKSAcafRDvuQ"));
-//        System.out.println(doDecrypt("g3QN7O3ic3R1hrbd5lPAzg=="));
-//        System.out.println(doDecrypt("VXHGklzfcTotU466q81ScTJ0CILfSPI5DnmbCA9bEeY="));
-//        System.out.println(doDecrypt("P6DXmg3HulHdLzzvvUt6/ikyUWEMKuYKNbBbu7b+zIAl4tIZFjZ+j1HdOfdRdFkN"));
-//        System.out.println(doDecrypt("6sA6JZUli4CC9R+g984ajQ=="));
-//        System.out.println(doDecrypt("EhBCNbSSfVMmnBhzCFYJVXLDZrXyHBsopc9B2yj*/nbFA="));
-//        System.out.println(doDecrypt("QtAV+aZziOJWRG08zjzQKdnBXPLHv/Gq"));
-//        System.out.println(doDecrypt("+raQgjnB44Kmrwo5yHYHYPwGf9QZQ4Bx/AcS0nyhzU8="));
-//        System.out.println(doDecrypt("62148358956066386214835895606638"));
-//        System.out.println("卫勇".getBytes());
+        System.out.println(doDecrypt("0fQo7fpV6pxjsYaBw9vzz6x6Kd6iupmja9Nys6Bh3/Q="));
+//        System.out.println(doDecrypt("OuIJ5qcNQQ1WRG08zjzQKdnBXPLHv/Gq"));
     }
 }

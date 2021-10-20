@@ -105,20 +105,22 @@ public class AESUtil {
     public static void main(String[] args) throws Exception {
 //        String merchant_contacts = "mobile";
 //        System.out.println("下划线:" + merchant_contacts);
-//        String hump = lineToHump(merchant_contacts);
-//        System.out.println("驼峰:" + hump);
-//        String decrypt3 = decrypt("6sA6JZUli4CC9R+g984ajQ==", "merchantContacts");
-//        String decrypt4 = decrypt("VFN7vLZw9ivZwVzyx7/xqg==", "contactEmail");
+//        String hump = lineToHump("PHONE");
+//        System.out.println( hump);
+//        String decrypt3 = decrypt("ujMLAzTgjJyCHSyOTxJ4OA==", "merchantContacts");
+        String decrypt4 = decrypt("QS8MASl2Y0jzdJBbsD58yg==", "contactNumber");
+        System.out.println(decrypt4);
+//        System.out.println(doDecrypt("WD2mDxM8V5d7VXhHyfJchhoDz58w2FAm2XUMd9ZS8os="));
 //        System.out.println("decrypt3:" + decrypt3);
 //        System.out.println("decrypt3:" + decrypt4);
 
 
-        System.out.println(doDecrypt("gBeoR/FZALq9afoBo5Qk5w=="));
-            System.out.println(doDecrypt("iISklm8Ce4VLNap3eTwXFRFy+TFuh5/wWlZWmXBj4gQ7ebIfGj8HTKSAcafRDvuQ"));
-        System.out.println(doDecrypt("g3QN7O3ic3R1hrbd5lPAzg=="));
-        System.out.println(doDecrypt("VXHGklzfcTotU466q81ScTJ0CILfSPI5DnmbCA9bEeY="));
-            System.out.println(doDecrypt("P6DXmg3HulHdLzzvvUt6/ikyUWEMKuYKNbBbu7b+zIAl4tIZFjZ+j1HdOfdRdFkN"));
-        System.out.println(doDecrypt("6sA6JZUli4CC9R+g984ajQ=="));
-        System.out.println(doDecrypt("EhBCNbSSfVMmnBhzCFYJVXLDZrXyHBsopc9B2yjnbFA="));
+//        System.out.println(doDecrypt("XQYEucKDzVphUkizohktdA=="));
+//            System.out.println(doDecrypt("iISklm8Ce4VLNap3eTwXFRFy+TFuh5/wWlZWmXBj4gQ7ebIfGj8HTKSAcafRDvuQ"));
+//        System.out.println(doDecrypt("g3QN7O3ic3R1hrbd5lPAzg=="));
+//        System.out.println(doDecrypt("VXHGklzfcTotU466q81ScTJ0CILfSPI5DnmbCA9bEeY="));
+//            System.out.println(doDecrypt("P6DXmg3HulHdLzzvvUt6/ikyUWEMKuYKNbBbu7b+zIAl4tIZFjZ+j1HdOfdRdFkN"));
+//        System.out.println(doDecrypt("6sA6JZUli4CC9R+g984ajQ=="));
+//        System.out.println(doDecrypt("EhBCNbSSfVMmnBhzCFYJVXLDZrXyHBsopc9B2yjnbFA="));
     }
 }

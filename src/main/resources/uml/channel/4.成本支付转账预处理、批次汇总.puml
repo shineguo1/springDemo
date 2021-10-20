@@ -1,0 +1,37 @@
+
+@startuml
+start
+:redis锁;
+if(指定日期参数?) then(Y)
+   : 查询这个日期交易的机构+柜台+渠道;
+partition 指定日期、渠道重跑 {
+   : 查询当日该渠道收费的初始化状态订单;
+   : 给这些订单添加统一的批次号，状态改为进行中;
+   : 该批次号添加加成本支付汇总dispatch任务;
+}
+endif
+partition 上一日日切数据重跑 {
+    if(查询redis：是否已重跑昨日数据？) then(N)
+        :查询昨日成功状态订单的机构+柜台+渠道;
+        :重复"指定日期、渠道重跑”;
+        note right: 指定日期=昨天
+        :redis缓存：已重跑昨日数据;
+    endif
+}
+partition 当前日期成本转账 {
+    :查询redis汇总批次处理渠道\n（BATCH_CHANNEL_LIST）;
+    note right: 成本中心记账时缓存;
+    if(缓存为空?) then (Y)
+       :查询当日成功状态订单的机构+柜台+渠道;
+    endif
+    :重复"指定日期、渠道重跑”;
+    note right: 指定时间=当前时间前30分钟;
+
+}
+:解redis锁;
+stop
+
+'输入：成本支付批次汇总任务
+'输出：订单增加批次号，dispatch任务。
+'描述：处理初始化状态订单，生成批次号。
+@enduml

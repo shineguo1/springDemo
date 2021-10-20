@@ -152,4 +152,8 @@ public class EncryptStringUtil {
         return StringUtils.isNotEmpty(str) && !str.contains(SECRET_SIGN);
 
     }
+
+    public static void main(String[] args) {
+        System.out.println("act_ru_integration".toUpperCase());
+    }
 }

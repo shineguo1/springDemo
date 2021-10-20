@@ -17,24 +17,34 @@ public class ReadTableStructure {
 
     public void initSql() {
         sql =
-"CREATE TABLE `T_MONITOR_WHITE_MEMBER_INFO` (\n" +
-        "  `ID` int(11) NOT NULL AUTO_INCREMENT,\n" +
-        "  `WHITE_MEMBER_NO` varchar(32) DEFAULT NULL COMMENT '商户白名单编号',\n" +
-        "  `MEMBER_ID` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '商户ID',\n" +
-        "  `MEMBER_NAME` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '商户名称',\n" +
-        "  `WHITE_TYPE` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '白名单类型 WARN',\n" +
-        "  `SELLER_IS_NOT_EMAIL` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '销售不发邮件  YES NO',\n" +
-        "  `SELLER_IS_NOT_MOBILE` varchar(8) CHARACTER SET utf8 DEFAULT NULL COMMENT '销售不发短信',\n" +
-        "  `BEGIN_TIME` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '开始时间',\n" +
-        "  `END_TIME` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '结束时间',\n" +
-        "  `DELETE_FLAG` varchar(16) DEFAULT 'NORMAL' COMMENT '删除标识',\n" +
-        "  `CREATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',\n" +
-        "  `CREATED_BY` varchar(32) DEFAULT '' COMMENT '创建人',\n" +
-        "  `UPDATED_AT` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',\n" +
-        "  `UPDATED_BY` varchar(32) DEFAULT '' COMMENT '更新人',\n" +
+"CREATE TABLE `T_COST_TRADE_PAYMENT` (\n" +
+        "  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',\n" +
+        "  `PAY_REQ_NO` varchar(32) DEFAULT NULL COMMENT '支付业务单号',\n" +
+        "  `BATCH_NO` varchar(32) DEFAULT NULL COMMENT '转账批次号',\n" +
+        "  `RELATION_NO` varchar(32) DEFAULT NULL COMMENT '关联号',\n" +
+        "  `PAY_REQ_DATE` timestamp NULL DEFAULT NULL COMMENT '支付请求时间',\n" +
+        "  `TRADE_TYPE` varchar(16) DEFAULT NULL COMMENT '转账类型',\n" +
+        "  `CCY` varchar(16) DEFAULT NULL COMMENT '币种',\n" +
+        "  `AMT` int(9) DEFAULT NULL COMMENT '转账金额',\n" +
+        "  `STATUS` varchar(16) DEFAULT NULL COMMENT '状态',\n" +
+        "  `EVENT_NO` varchar(32) DEFAULT NULL COMMENT '会计事件',\n" +
+        "  `RESP_DATE` datetime DEFAULT NULL COMMENT '交易返回时间',\n" +
+        "  `RESP_NO` varchar(32) DEFAULT NULL COMMENT '交易返回订单号',\n" +
+        "  `ERROR_CODE` varchar(32) DEFAULT NULL COMMENT '错误码',\n" +
+        "  `ERROR_MSG` varchar(128) DEFAULT NULL COMMENT '错误信息',\n" +
+        "  `USABLE_FLAG` varchar(16) DEFAULT NULL COMMENT '可用标识',\n" +
+        "  `DESCRIPTION` varchar(128) DEFAULT NULL COMMENT '描述',\n" +
+        "  `CREATED_AT` timestamp NOT NULL COMMENT '建立日期',\n" +
+        "  `CREATED_BY` varchar(32) NOT NULL COMMENT '创建用户',\n" +
+        "  `UPDATED_AT` timestamp NOT NULL COMMENT '最后更新时间',\n" +
+        "  `UPDATED_BY` varchar(32) NOT NULL COMMENT '最后更新用户',\n" +
+        "  `BIZ_TYPE` varchar(32) DEFAULT NULL COMMENT '产品大类',\n" +
+        "  `SUB_BIZ_TYPE` varchar(32) DEFAULT NULL COMMENT '产品细类',\n" +
         "  PRIMARY KEY (`ID`),\n" +
-        "  KEY `MEMBER_ID_INDEX` (`MEMBER_ID`)\n" +
-        ") ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COMMENT='告警商户白名单配置信息表';\n" +
+        "  KEY `INX_BATCH_NO` (`BATCH_NO`) USING BTREE,\n" +
+        "  KEY `INX_CREATED_AT` (`CREATED_AT`),\n" +
+        "  KEY `IDX_PAY_REQ_NO` (`PAY_REQ_NO`) USING BTREE\n" +
+        ") ENGINE=InnoDB AUTO_INCREMENT=377218 DEFAULT CHARSET=utf8mb4 COMMENT='成本支付信息表';\n" +
         "\n";
         ;
 

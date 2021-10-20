@@ -1,0 +1,51 @@
+
+@startuml
+|产品层|
+start
+:请求渠道路由;
+|route|
+:查询所有可用渠道路由|
+|产品层|
+:选择渠道路由;
+:请求渠道服务;
+|xxxx-channel|
+:调用dubbo服务初始化订单;
+|channel-core|
+:初始化订单;
+|xxxx-channel|
+:调用dubbo服务获取接口实现类;
+|channel-core|
+:查询渠道实现类配置;
+|xxxx-channel|
+:调用渠道API;
+if(成功？) then(N)
+    |xxxx-channel|
+    if(BizServiceException？) THEN (N)
+        :不计费;
+    else (Y)
+        |channel-core|
+        :错误码转换;
+        |xxxx-channel|
+        :根据错误类型判断计费;
+    endif
+
+    |channel-core|
+    :更新失败订单;
+    if(计费?) then (Y)
+        :发送计费订单到kafka;
+    else (N)
+    endif
+else (Y)
+    |channel-core|
+    :更新成功订单-计费;
+    :发送计费订单到kafka;
+endif
+    |xxxx-channel|
+    :返回渠道结果;
+|产品层|
+stop
+
+'输入：渠道路由参数（产品渠道、订单金额、交易业务场景、二级商户名称）和渠道接口参数
+'输出：渠道调用结果
+'描述：产品层查询可用渠道路由，调用某个渠道。渠道服务创建订单，并调用渠道方，根据渠道方返回结果进行计费，最后将计费订单发送到kafka供成本中心处理。
+@enduml

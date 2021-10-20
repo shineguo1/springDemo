@@ -1,0 +1,35 @@
+
+@startuml
+|cost-center|
+start
+:查询成本汇总批次信息;
+:查询成本支付信息;
+|agreement|
+:查询协议收费方案;
+|cost-center|
+:判断预付、后付;
+|accounting|
+:查询会计事件;
+|cost-center|
+:成本计费;
+|transfer|
+:转账;
+|cost-center|
+if(转账成功?) then (Y)
+    :更新成本汇总批次;
+    :更新成本支付信息;
+else(N)
+    |route|
+    :查询机构/柜台/渠道信息;
+    |warning|
+    :发送余额不足预警邮件;
+    |cost-center|
+    :更新成本支付信息;
+endif
+stop
+
+
+'输入：成本支付转账dispatch任务(批次号)
+'输出：转账，并落库。
+'描述：完成支付成本转账，并记录落库。若余额不足转账失败，发送邮件预警。
+@enduml
