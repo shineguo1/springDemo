@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author xinjie_guo
  * @version 1.0.0 createTime:  2019/11/6 17:55
- * @description
+ * @description bean注入，见springframework杂记
  */
 @Component
 public class MyFactoryBean implements FactoryBean{

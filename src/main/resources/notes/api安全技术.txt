@@ -40,7 +40,6 @@ session和sessionid：服务器会保存一份，可能保存到缓存/数据库
 token：服务器不需要记录任何东西，每次都是一个无状态的请求，每次都是通过解密来验证是否合法。
 sessionid：一般是随机字符串，要到**服务器检索id的有效性。**出现请求：服务器重启饿内存中的session没了，数据库服务器挂了。
 
-C:\Users\xinjie_guo\Documents\Navicat\MySQL\servers\10.0.19.41_xinyan
 
 
 

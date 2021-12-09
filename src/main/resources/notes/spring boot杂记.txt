@@ -1,12 +1,94 @@
-sevlet3.0规范 
+ servlet3.0规范
     ->要求扫描resources/META-INF/services/javax.servlet.ServletContainerInitializer，
     ->如果文件里的类实现了ServletContainerInitializer，则执行onStartup方法---【SPI接口】
     ->如果类上有@HandlesTypes(xxxx.class)注释，则扫描所有xxxx.class作为set，
 	作为onStartup的第一个参数传进方法
-Spring    
+Spring
     ->SpringServletContainerInitializer实现了ServletContainerInitializer
     ->SpringServletContainerInitializer注解@HandlesTypes(WebApplicationInitializer.class)
     ->onStartup遍历了Set<(WebApplicationInitializer.class)>,执行了WebApplicationInitializer.onStartup方法
     ==》所以只要按servlet3.0的规范做好配置，在spring中实现了WebApplicationInitializer类，
 	在实现类中加载上下文，实例化dispatchServlet（spring官网中的六七行方法），就可以代替xml
+
+SpringBoot
+    ->启动注解@SpringBootApplication包含以下3个：
+    @SpringBootConfiguration
+    @EnableAutoConfiguration
+    @ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+    		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+    ->@SpringBootConfiguration
+    ->@EnableAutoConfiguration包含@AutoConfigurationPackage和@Import(AutoConfigurationImportSelector.class)
+        =>@AutoConfigurationPackage包含@Import(AutoConfigurationPackages.Registrar.class)
+        =>Registrar向容器中导入注解所在位置(即application)所在包下的所有组件
+    ->AutoConfigurationImportSelector是导入所有jar包下\META-INF\spring.factories里的SPI
+        =>selectImports(AnnotationMetadata annotationMetadata)  //2.3.7版本line95
+        =>getAutoConfigurationEntry(annotationMetadata);    //2.3.7版本line99
+        =>getCandidateConfigurations(annotationMetadata, attributes);   //2.3.7版本line123
+        =>SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(),getBeanClassLoader()); //2.3.7版本178
+        =>loadSpringFactories(classLoader).getOrDefault(factoryTypeName, Collections.emptyList());  //SpringFactoriesLoader.java line122
+        =>classLoader.getResources(FACTORIES_RESOURCE_LOCATION) :  ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION)); //SpringFactoriesLoader.java line133-134
+		      //FACTORIES_RESOURCE_LOCATION的值是"META-INF/spring.factories", 即加载所有jar包下这个SPI里的自动装配实现类(autoConfiguration)。
+		      //实际上是spring-boot-autoconfigure-2.3.7.RELEASE.jar里 # Auto Configure下面的127个实现类。
+		      //按需加载：SPI实现类不会全部加入bean容器，根据条件装配（@ConditionOnClass注解）按需配置。
+              //生效的自动装配配置类(xxxxAutoConfiguration不会覆盖用户自定义的组件(bean上有注解@ConditionalOnMissingBean)
+              //自动装配的属性一般从xxxPropties.class里来（如@EnableConfigurationProperties(CacheProperties.class)）
+              //xxxPropties.class里属性的值从配置文件（application.yml）里来（如@ConfigurationProperties(prefix = "spring.cache")
+    ->yml中配置debug=true，开启debug模式，控制台会打印不生效的自动装配类(Negative matches，失效原因，即OnClassCondition的类)和生效的自动装配类(positive matches，生效原因)
+    ->修改配置属性的方法：1.修改application配置文件 2. 自定义@Bean组件 3.自定义器XXXXCustomizer（如ServletWebServerFactoryCustomizer）
+
+    ->静态资源：springBoot默认静态资源目录是/static (or /public or /resources or /META-INF/resources)  //org.springframework.boot.autoconfigure.web.ResourceProperties.CLASSPATH_RESOURCE_LOCATIONS
+        =>静态资源访问路径可以用配置 spring.resources.static-locations = [classpath:/myres/]来修改。
+        =>springBoot默认静态资源访问路径是/**, (请求到达服务器，先匹配controller，controller找不到找静态资源)
+        =>springBoot默认静态资源访问路径是可以通过配置spring.mvc.static-path-pattern=/resources/**来修改。
+
+    ->请求映射原理（详见下面"SpringBoot参数解析原理"）:
+        =>调用链：HttpServlet#doGet/doPost -> FrameworkServlet#processRequest -> DispatcherServlet#doService
+        =>reference：org.springframework.web.servlet.DispatcherServlet#doService
+        =>DispatcherServlet#doDispatch查找对应的org.springframework.web.servlet.HandlerAdapter
+        =>HandlerAdapter有参数解析器(default26个,诸如RequestParamMethodArgumentResolver，PathVariableMethodArgumentResolver，ServletCookieMethodArgumentResolver，RequestResponseMethodArgumentResolver等等)
+
+SpringBoot Web请求参数解析原理：
+    在DispatcherServlet#doDispatch中
+    -> DispatcherServlet#getHandler: 用HandlerMapping.java找到能处理请求的handler(Controller.Method())，返回匹配的第一个handler
+    -> DispatcherServlet#getHandlerAdapter 为handler找一个适配器HandlerAdapter.java（引用：上面的请求映射原理），返回第一个匹配的适配器
+    handlerAdapter: supports方法：这个适配器实现是否支持当前handler对象（e.g. AbstractHandlerMethodAdapter.java）
+                    handle方法: 执行目标方法，处理请求。(e.g. RequestMappingHandlerAdapter#handleInternal)
+    ->ha.handle： 上面的handle方法
+    ->(request请求)mav.invokeHandlerMethod: 上面的RequestMappingHandlerAdapter#invokeHandlerMethod
+    ->invokeHandlerMethod中找到可用的方法参数解析器argumentResolvers(default26个,诸如RequestParamMethodArgumentResolver，PathVariableMethodArgumentResolver，ServletCookieMethodArgumentResolver，RequestResponseMethodArgumentResolver等等)
+        （interface）HandlerMethodArgumentResolver # supportsParameter: 该解析器是否支持当前方法参数
+                                      # resolveArgument: 处理方法参数
+    ->invokeHandlerMethod中找到可用的返回值处理器returnValueHandlers（default15个，如ModelAndView.... , ResponseBody..., Streaming... ,HttpEntity... 等等）
+    ->invocableMethod.invokeAndHandle(RequestMappingHandlerAdapter中)：invocableMethod是目标方法，这里实际执行目标方法。
+    -> invokeAndHandle方法中：Object returnValue = invokeForRequest实际调用controller目标方法，执行业务逻辑。
+                            setResponseStatus 下面这句已经执行完controller目标方法了。
+    -> invokeForRequest（InvocableHandlerMethod.class) 方法中，先getMethodArgumentValues获取所有参数，再doInvoke实际调用方法。
+    -> 大致说明getMethodArgumentValues做的事：首先拿到controller方法的所有参数，依次遍历。主要根据参数前面的注解（如@RequestParam)和参数类型（是否是map）,从(默认)26个参数解析器中找到匹配的，然后利用参数解析器从request里取出对应的值（比如@PathVariable(value = "id")，就从请求里取出所有路径变量，然后从路径变量里取出"id"）
+    -> ServletRequestMethodArgumentResolver 解析WebRequest、ServletRequest、HttpSession等servlet api。
+        往请求参数的Map<String,Object> map, Model model放数据，等于request.setAttribute放数据
+    客制化：
+    ->WebMvcConfigurer.addFormatters 可以添加自定义的**Converter**和**Formatter**（如日期格式化）。
+    返回值处理：
+    ->returnValueHandlers(HandlerMethodReturnValueHandlerComposite#handleReturnValue)
+    -> 返回值处理器判断是否支持这种类型supportsReturnType
+       返回值处理器调用handleReturnValue处理
+       RequestResponseBodyMethodProcesssor可以处理标了@ResponseBody的返回值。
+       ->利用MessageConverts进行处理，将数据写成json
+         1.内容协商（浏览器默认会以请求头的方式告诉服务器他能接受什么内容类型）
+         2.服务商最终根据自己能力决定服务器能生产出什么内容类型的数据
+         3.SpringMVC会挨个遍历所有容器底层的HttpMessageConverter，看谁能处理
+            1) 得到MappingJackson2HttpMessageConverter可以将对象写json
+            2) 利用MappingJackson2HttpMessageConverter将对象转为json再写出去
+
+SpringBoot 内容协商原理：
+    功能介绍：客户端通过请求头的Accept字段（如application/json，application/xml)告诉服务器自己想要的数据返回格式（如json、xml）。
+    maven依赖： <groupId>com.fasterxml.jackson.dataformat</groupId>
+               <artifactId>jackson-dataformat-xml</artifactId>
+    处理类：AbstractMessageConverterMethodProcessor.class
+    工作原理：1.判断响应头是否有确定的媒体类型(MediaType.class)
+            2.获取客户端所有支持类型（Accept请求字段第一个值）
+            3.遍历循环服务端内所有MessageConverter，找到所有支持返回值类型（可能是pojo）的converter。
+            4.服务端统计所有converter能够返回的媒体类型。
+            5.匹配找出所有客户端能处理的（想要的）媒体类型mediaTypesToUse
+
 
