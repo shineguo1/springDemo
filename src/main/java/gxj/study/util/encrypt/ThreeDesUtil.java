@@ -1,9 +1,8 @@
-package gxj.study.util;
+package gxj.study.util.encrypt;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import javax.crypto.Cipher;
@@ -31,9 +30,6 @@ import static java.util.Locale.ENGLISH;
  * 密钥，P代表明文，C代表密表，这样，
  * 3DES加密过程为：C=Ek3(Dk2(Ek1(P)))
  * 3DES解密过程为：P=Dk1((EK2(Dk3(C)))
- *
- * @author ChenWoZe(YAN.WANG)
- * @version 1.0.0 createTime: 2016/3/25
  */
 @Slf4j
 @Component
@@ -51,11 +47,6 @@ public class ThreeDesUtil {
     private static final String Algorithm = "DESede";
 
     private static String secKey = "0RiVs7pV3ico2SdfTj96MPr2";
-
-//    @Value("${base.security.desKey}")
-    public void setSecKey(String secKey) {
-        ThreeDesUtil.secKey = secKey;
-    }
 
     /**
      * keybyte为加密密钥，长度为24字节
@@ -161,10 +152,7 @@ public class ThreeDesUtil {
             e.printStackTrace();
         }
         if (null == decryptMode || decryptMode.length < 1) {
-//            log.error("ERROR doDecrypt PARAM: {}", src);
             throw new RuntimeException("数据未加密");
-
-//            return src;
         }
         String deSrc = new String(decryptMode);
         if (StringUtils.isEmpty(deSrc)) {
@@ -336,68 +324,5 @@ public class ThreeDesUtil {
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
         }
-    }
-//
-//    public static void main(String[] args) {
-////        System.out.println(doEncrypt("深圳市南山区大冲商务中心A座1502室"));
-////        System.out.println(doEncrypt("021-78778889000000"));
-////        System.out.println(doDecrypt("ELO8JVs6duoFyVWDd77Nw3I51f15szJahrFXPj5Xk+ECSR0f64oDitvSLzoKIfbN"));
-////        System.out.println(doDecrypt(" iXR35hg3rEPnoxmY6Q+T+xCKJxlXDMrsGFhYycuSsIIPBSNUGJZxUCD/jON7C8ove"));
-////        System.out.println(doDecrypt("8GPGQh8hwgruIHRVAsBGiBAa3cWIImlt"));
-////        String a = null;
-//        System.out.println("===");
-//        String s = doEncrypt("上海市崇明区城桥镇东门路378号4号楼329室（崇明区经济委员会招商服务中心）");
-//        System.out.println("T_CUSTOMER_MERCHANT_CONFIG : 1962 :");
-//        System.out.println("AGREEMENT_SEND_ADDR : "+s);
-//        System.out.println(s.length());
-////
-////        System.out.println("===");
-////        s = doEncrypt("17621539576");
-////        System.out.println("T_CUSTOMER_MERCHANT_LOGIN_INFO_HIS : 800 :");
-////        System.out.println("LOGIN_NAME : " + s);
-////        System.out.println(s.length());
-////
-////        System.out.println("===");
-////        s = doDecrypt("frVlsDOexiie8SPoz1NPRVbmtg3DoKilP4fVOqcV+KOLgS7aj3MpUg==");
-////        System.out.println("T_CUSTOMER_AGREEREL : 1592 :");
-////        System.out.println("ACCOUNT_NAME_MIX : " + EncryptStringUtil.name(s));
-////        System.out.println(s.length());
-////
-////        System.out.println("===");
-////        s = doDecrypt("tDqAoOeW/UmAWKgC8SZfCeM3kKexpb1cQZi8PqWhMu4=");
-////        System.out.println("T_CUSTOMER_OPERATOR_INFO : 5288 :");
-////        System.out.println("CUSTOMER_NAME_MIX : " + EncryptStringUtil.name(s));
-////        System.out.println(s.length());
-////
-////        System.out.println("---");
-////        s = doDecrypt("xfQW9EVBPwrP6jVtj+JB0iBmTUYeaQyRCotXYOvFqqn/h+lpoImTOPP0EJeUMK4e");
-////        System.out.println("T_CUSTOMER_OPERATOR_INFO : 5287 :");
-////        System.out.println("CUSTOMER_NAME_MIX : " + EncryptStringUtil.name(s));
-////        System.out.println(s.length());
-////
-////        System.out.println("===");
-////        s = doDecrypt("XwBDSVdDaUivYMUa28W77g==");
-////        System.out.println("T_CUSTOMER_ORG : 2998 :");
-////        System.out.println("PHONE_MIX : " + EncryptStringUtil.phone(s));
-////        System.out.println(s.length());
-////        s = doDecrypt("y4NdvotVjm4=");
-////        System.out.println("T_CUSTOMER_ORG : 2998 :");
-////        System.out.println("LEGALREPRESENTNAME_MIX : " + EncryptStringUtil.name(s));
-//
-//
-//        String x = doDecrypt("BY3EsUOlFcQ=");
-//        System.out.println(x);
-//        System.out.println(x.length());
-//    }
-
-    public static void main(String[] args) {
-//        System.out.println(doEncrypt("chao_huang@xinyan.com"));
-//        System.out.println(doDecrypt("ELO8JVs6duoFyVWDd77Nw3I51f15szJahrFXPj5Xk+ECSR0f64oDitvSLzoKIfbN"));
-//        System.out.println(doDecrypt(" iXR35hg3rEPnoxmY6Q+T+xCKJxlXDMrsGFhYycuSsIIPBSNUGJZxUCD/jON7C8ove"));
-//        System.out.println(doDecrypt("8GPGQh8hwgruIHRVAsBGiBAa3cWIImlt"));
-//        String a = null;
-//        System.out.println(doDecrypt("iISklm8Ce4VLNap3eTwXFRFy+TFuh5/wWlZWmXBj4gQ7ebIfGj8HTKSAcafRDvuQ"));
-        System.out.println(doDecrypt("0fQo7fpV6pxjsYaBw9vzz6x6Kd6iupmja9Nys6Bh3/Q="));
-//        System.out.println(doDecrypt("OuIJ5qcNQQ1WRG08zjzQKdnBXPLHv/Gq"));
     }
 }

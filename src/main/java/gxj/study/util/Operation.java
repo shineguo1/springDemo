@@ -25,4 +25,8 @@ public enum Operation {
     public double apply(double x, double y) {
         return op.applyAsDouble(x, y);
     }
+
+    public static void main(String[] args) {
+        System.out.println(PLUS.apply(2.0,2.0));
+    }
 }

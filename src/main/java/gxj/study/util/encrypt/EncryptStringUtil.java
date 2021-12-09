@@ -1,14 +1,7 @@
-package gxj.study.util;
+package gxj.study.util.encrypt;
 
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * 脱敏工具类
- * <p/>
- * <p>
- * </p>
- * User: 小乙  Date: 2019/08/07 ProjectName: oms
- */
 public class EncryptStringUtil {
 
     private final static String SECRET_SIGN = "*";
@@ -151,9 +144,5 @@ public class EncryptStringUtil {
     public static Boolean checkEncrypt(String str) {
         return StringUtils.isNotEmpty(str) && !str.contains(SECRET_SIGN);
 
-    }
-
-    public static void main(String[] args) {
-        System.out.println("act_ru_integration".toUpperCase());
     }
 }
