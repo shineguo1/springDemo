@@ -61,7 +61,7 @@ public class DBScript7 {
         execute(filePath, tableName);
     }
 
-    private static void initEncryptAttribute(String attribute, DBScript3.DecryptMethod decryptMethod, String decryptKey, MixMethod mixMethod) {
+    private static void initEncryptAttribute(String attribute, DecryptMethod decryptMethod, String decryptKey, MixMethod mixMethod) {
         DECRYPT_METHOD_CACHE.put(attribute, decryptMethod::doDecrypt);
         DECRYPT_KEY_CACHE.put(attribute, decryptKey);
         MIX_METHOD_CACHE.put(attribute, mixMethod);
