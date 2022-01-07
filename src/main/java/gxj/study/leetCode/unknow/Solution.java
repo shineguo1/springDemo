@@ -1,7 +1,5 @@
-package gxj.study.leetCode;
+package gxj.study.leetCode.unknow;
 
-
-import com.alibaba.fastjson.JSON;
 
 class Node {
     public int val;
