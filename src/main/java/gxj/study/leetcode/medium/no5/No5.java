@@ -1,4 +1,4 @@
-package gxj.study.leetCode.normal.no5;
+package gxj.study.leetcode.medium.no5;
 
 import lombok.extern.slf4j.Slf4j;
 

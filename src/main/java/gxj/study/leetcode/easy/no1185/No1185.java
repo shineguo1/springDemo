@@ -1,4 +1,4 @@
-package gxj.study.leetCode.simple.no1185;
+package gxj.study.leetcode.easy.no1185;
 
 import java.time.LocalDate;
 import java.util.Date;

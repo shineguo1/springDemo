@@ -1,4 +1,4 @@
-package gxj.study.leetCode.unknow;
+package gxj.study.leetcode.unknown;
 
 import java.util.HashMap;
 import java.util.Map;

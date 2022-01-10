@@ -1,4 +1,4 @@
-package gxj.study.leetCode.simple.no2022;
+package gxj.study.leetcode.easy.no2022;
 
 import java.util.Arrays;
 

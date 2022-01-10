@@ -1,6 +1,4 @@
-package gxj.study.leetCode.simple.no1576;
-
-import java.util.Arrays;
+package gxj.study.leetcode.easy.no1576;
 
 /**
  * @author xinjie_guo

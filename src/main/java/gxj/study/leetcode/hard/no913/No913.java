@@ -1,4 +1,4 @@
-package gxj.study.leetCode.hard.no913;
+package gxj.study.leetcode.hard.no913;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ public class No913 {
     public final static int CAT_WIN = 2;
     public final static int MOUSE_WIN = 1;
     public final static int DRAW = 0;
-    public final static int UNKNOW = -1;
+    public final static int UNKNOWN = -1;
 
     public final static int HOLE_POS = 0;
     public final static int INIT_CAT_POS = 2;
@@ -194,7 +194,7 @@ public class No913 {
             }
         }
         //剩余情况一定符合转移方程的3或6。
-        return UNKNOW;
+        return UNKNOWN;
     }
 
     private boolean anyIs(int[] nextStepsStatus, int targetStatus) {

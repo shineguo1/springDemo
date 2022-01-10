@@ -1,4 +1,4 @@
-package gxj.study.leetCode.normal.no71;
+package gxj.study.leetcode.medium.no71;
 
 import java.util.Deque;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package gxj.study.leetCode.hard.no913;
+package gxj.study.leetcode.hard.no913;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;

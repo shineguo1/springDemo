@@ -1,4 +1,4 @@
-package gxj.study.leetCode.normal.no390;
+package gxj.study.leetcode.medium.no390;
 
 /**
  * @author xinjie_guo
