@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 管控台日志打印，发布生产需注释 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="utf-8"> <!-- encoder 可以指定字符集，对于中文输出有意义 -->
+            <Pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] %level [%X{traceId}] [%file:%method:%line] %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 外部jar包 日志级别设置 -->
+    <logger level="ERROR" name="ch.qos.logback"/>
+    <logger level="ERROR" name="org.springframework.web"/>
+    <logger level="ERROR" name="org.apache.flink"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+
+</configuration>
