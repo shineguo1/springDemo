@@ -1,4 +1,4 @@
-package gxj.study.demo.flink;
+package gxj.study.demo.flink.dataStreamApi;
 
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.DataSet;

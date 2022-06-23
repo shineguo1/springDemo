@@ -1,9 +1,7 @@
-package gxj.study.demo.flink;
+package gxj.study.demo.flink.dataStreamApi;
 
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.java.DataSet;
-import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -22,8 +20,10 @@ import java.util.function.Function;
 public class DataStream_WordCount {
 
     public static void main(String[] args) throws Exception {
-        //socketStream 启动 SocketServer 发送数据
+        //无边界 - 流式 ： socketStream 启动 SocketServer 发送数据
         execute(DataStream_WordCount::unboundedSource);
+
+        //有边界 - 批式：
 //        execute(DataStream_WordCount::boundedSource);
     }
 
@@ -43,13 +43,13 @@ public class DataStream_WordCount {
         DataStream<Tuple2<String, Integer>> set =
                 stringDataSource
                         //flatMap分词计数
-                        .flatMap(new WordCountFlatMap())
+                        .flatMap(new WordCountFlatMap()).startNewChain()
                         //按第一个字段（word）分组
                         .keyBy(o -> o.f0)
                         //把第二个位置（计数）的值累加聚合
                         .sum(1);
 
-        //4.打印，同 set.print()
+        //4.sink输出，这里使用打印输出，同 set.print()
         set.addSink(new PrintSinkFunction<>());
 
         //5. 启动执行（划定界限bounded）
