@@ -1,36 +1,75 @@
 package gxj.study.demo.flink.hive;
 
-import org.apache.flink.table.api.EnvironmentSettings;
-import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.catalog.hive.HiveCatalog;
+
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author xinjie_guo
- * @version 1.0.0 createTime:  2022/6/23 17:02
+ * @version 1.0.0 createTime:  2022/6/24 10:33
  */
+
 public class HiveDemo {
 
-    public static void main(String[] args) {
-        // 1 设置执行环境
-        EnvironmentSettings settings = EnvironmentSettings
-                .newInstance()
-                .useBlinkPlanner()
-                .inStreamingMode() // 有流和批inBatchMode() 任选
-                .build();
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        // 2 表执行环境
-        TableEnvironment tableEnv = TableEnvironment.create(settings);
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStreamSource<JSONObject> hbaseData = env.addSource(new sourceFromjson());
+        hbaseData.print();
+        try {
+            env.execute("Flink print data");
 
-        // 3 定义Hive配置
-        // HiveCatalog 名称 唯一表示 随便起
-        String name = "myHive";
-        // 默认数据库名称，连接之后默认的数据库
-        String defaultDatabase = "test";
-        //hive-site.xml存放的位置，本地写本地，集群写集群的路径
-        String hiveConfDir = "Conf/";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        // 4 注册
-        HiveCatalog hiveCatalog = new HiveCatalog(name, defaultDatabase, hiveConfDir);
-        tableEnv.registerCatalog(name,hiveCatalog);
+
+    private static class sourceFromjson extends RichSourceFunction<JSONObject> {
+        private transient Statement st = null;
+
+        @Override
+        public void open(Configuration parameters) throws Exception {
+            super.open(parameters);
+            Class.forName("org.apache.hive.jdbc.HiveDriver");
+            Connection con = DriverManager.getConnection("jdbc:hive2://172.20.192.58:10010/xy_ods",
+                    "hadoop", "hadoop");
+            st = con.createStatement();
+        }
+
+        @Override
+        public void run(SourceContext<JSONObject> ctx) throws Exception {
+//            System.out.println("dateTime = " + dateTime);
+            ResultSet rs = st.executeQuery("SELECT  " +
+                    "blocknumber" +
+                    " from xy_ods.ods_nft_x2y2 limit 10");
+
+            while (rs.next()) {
+                String blocknumber = rs.getString(1);
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>：" + blocknumber);
+                if (StringUtils.isBlank(blocknumber)) {
+                    //todo 如果为空 不插入
+                    continue;
+                }
+                JSONObject json = new JSONObject();
+                json.put("blocknumber", blocknumber);
+                ctx.collect(json);
+            }
+        }
+
+        @Override
+        public void cancel() {
+
+        }
     }
 }

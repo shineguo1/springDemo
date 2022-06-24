@@ -1,4 +1,4 @@
-package gxj.study.demo.flink.dataStreamApi;
+package gxj.study.demo.flink.datastream;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

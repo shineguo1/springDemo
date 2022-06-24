@@ -1,4 +1,4 @@
-package gxj.study.demo.flink.tableApi;
+package gxj.study.demo.flink.table;
 
 import gxj.study.demo.flink.MyPojo;
 import gxj.study.demo.flink.PojoSourceFunction;
@@ -40,8 +40,8 @@ public class TableDemo {
                 .where($("name").isEqual("john"));
 
         // 5. 输出结果(table无法输出，转回dataStream)
-        tableEnv.toRetractStream(resultTable,MyPojo.class).print("result1");
-        tableEnv.toRetractStream(resultTable2,MyPojo.class).print("result2  ");
+        tableEnv.toDataStream(resultTable,MyPojo.class).print("result1");
+        tableEnv.toDataStream(resultTable2,MyPojo.class).print("result2  ");
 
         // 6. 执行
         env.execute();
