@@ -63,7 +63,7 @@ public class ReadExcelUtils {
 	/**
 	 * 读取Excel数据内容
 	 * 
-	 * @return Map 包含单元格数据内容的Map对象
+	 * @return Map 包含单元格数据内容的Map对象 index->value
 	 */
 	public Map<Integer, Map<Integer,Object>> readExcelContent() throws Exception{
 		if(wb==null){
@@ -112,7 +112,7 @@ public class ReadExcelUtils {
 	/**
 	 * 读取Excel数据内容
 	 *
-	 * @return Map 包含单元格数据内容的Map对象
+	 * @return Map 包含单元格数据内容的Map对象 header -> value
 	 */
 	public Map<Integer, Map<String,Object>> readExcelContent2() throws Exception{
 		if(wb==null){

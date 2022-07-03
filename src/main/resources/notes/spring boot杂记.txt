@@ -79,6 +79,37 @@ SpringBoot Web请求参数解析原理：
          3.SpringMVC会挨个遍历所有容器底层的HttpMessageConverter，看谁能处理
             1) 得到MappingJackson2HttpMessageConverter可以将对象写json
             2) 利用MappingJackson2HttpMessageConverter将对象转为json再写出去
+> 扩展：SpringBoot如何解析body（json）中的时间类型？
+> 调用链：
+> 1. org.springframework.web.servlet.HandlerAdapter#handle 执行参数解析适配器的目标方法
+> 2. org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#handleInternal 参数解析适配器实现类
+> 3. org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter#invokeHandlerMethod 见上文
+> 4. org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod#invokeAndHandle 见上文
+> 5. org.springframework.web.method.support.InvocableHandlerMethod#invokeForRequest 见上文 解析参数并执行方法主体
+> 6. org.springframework.web.method.support.InvocableHandlerMethod#getMethodArgumentValues 解析参数
+>　　org.springframework.web.method.support.InvocableHandlerMethod#doInvoke 调用方法主体（不分析，略）
+> 7. org.springframework.web.method.support.HandlerMethodArgumentResolverComposite#resolveArgument 解析器组合（组合模式）解析参数
+> 8. org.springframework.web.method.support.HandlerMethodArgumentResolver#resolveArgument 解析器解析参数
+>　　org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor#resolveArgument　这个是responseBody实现类
+> 9. org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor#readWithMessageConverters 把HttpInputMessage转换成argument value
+> 10. org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodArgumentResolver#readWithMessageConverters 把HttpInputMessage转换成argument value
+> 11. org.springframework.http.converter.AbstractHttpMessageConverter#read 转换器抽象方法
+> 12. org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.readInternal json转换器实现类
+> 13. org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.readJavaType 根据java类型解析值
+> 14. com.fasterxml.jackson.databind.ObjectMapper#readValue(InputStream, JavaType) jackson反序列化
+>
+> jackson如何反序列化时间？
+> ObjectMapper默认的DateFormat是StdDateFormat，参见成员变量`BaseSettings DEFAULT_BASE = new BaseSettings(......)`
+> StdDateFormat默认支持的时间格式是(1)时间戳. (2)`yyyy-MM-dd`. (3)`yyyy-MM-dd'T'HH:mm:ss.SSSZ` (ISO-8601数据类型) (4)`Tue, 30 Oct 2018 15:33:48 GMT`(RFC1123格式)
+> 修改jackson时间格式的方法：
+>　　(1) @JsonFormat注解
+>　　(2) yml配置：
+        ```
+        spring:
+            jackson:
+              date-format: yyyy-MM-dd HH:mm:ss # 默认是StdDateFormat
+              time-zone: GMT+8
+         ```
 
 SpringBoot 内容协商原理：
     功能介绍：客户端通过请求头的Accept字段（如application/json，application/xml)告诉服务器自己想要的数据返回格式（如json、xml）。

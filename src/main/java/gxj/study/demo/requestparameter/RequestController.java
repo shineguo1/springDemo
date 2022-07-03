@@ -70,6 +70,12 @@ public class RequestController {
         return id;
     }
 
+    @GetMapping("/getDemo/abc")
+    @ResponseBody
+    public Object getDemo(UserDTO user) {
+        return user;
+    }
+
 
 
 }

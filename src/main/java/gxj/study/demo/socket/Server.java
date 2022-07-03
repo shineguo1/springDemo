@@ -21,7 +21,7 @@ public class Server {
 //    ServerSocket serverSocket = null;
 
     //NIO的server
-    ServerSocketChannel serverSocket=null;
+    ServerSocketChannel serverSocket = null;
     /**
      * 缓存所有已连接的socket client
      */
@@ -71,7 +71,7 @@ public class Server {
                         //读取缓冲区的数据
                         buffer.flip();
                         String s = Charset.forName("utf-8").decode(buffer).toString();
-                        String msg = key + " - receive message:" + s;
+                        String msg = key + " - receive message:" + s + "\n";
                         System.out.println(msg);
                         //清空
                         buffer.clear();
@@ -89,6 +89,7 @@ public class Server {
 
     /**
      * 向所有客户端发送消息，告知自己收到了哪个客户端发的哪条消息
+     *
      * @param s
      * @throws IOException
      */
