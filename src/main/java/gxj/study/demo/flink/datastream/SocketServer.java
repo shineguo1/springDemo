@@ -24,11 +24,10 @@ public class SocketServer {
             Scanner scanner = new Scanner(System.in);
             while(true){
                 String input = scanner.nextLine();
-                Thread.sleep(2000);
                 bw.write(input+"\n");
                 bw.flush();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
