@@ -26,7 +26,6 @@ public class SocketServer {
                 String input = sc.next();
                 bw.write(input + "\n");
                 bw.flush();
-                System.out.println("send");
             }
         } catch (IOException e) {
             e.printStackTrace();
