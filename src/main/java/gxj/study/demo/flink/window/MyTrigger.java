@@ -24,7 +24,7 @@ public class MyTrigger extends Trigger<Object, TimeWindow> {
     public TriggerResult onElement(
             Object element, long timestamp, TimeWindow window, TriggerContext ctx)
             throws Exception {
-        System.out.println("[trigger] on element");
+        System.out.println("[trigger] on element, ctx" + ctx);
 
         if (window.getStart() == ctx.getCurrentWatermark()) {
             System.out.println("[trigger] window is start —— judge by Watermark");

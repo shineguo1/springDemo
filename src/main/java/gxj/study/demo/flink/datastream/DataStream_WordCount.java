@@ -56,7 +56,7 @@ public class DataStream_WordCount {
         env.execute();
     }
 
-    private static DataStreamSource<String> unboundedSource(StreamExecutionEnvironment env) {
+    public static DataStreamSource<String> unboundedSource(StreamExecutionEnvironment env) {
         return env.socketTextStream("127.0.0.1", 8888);
     }
 

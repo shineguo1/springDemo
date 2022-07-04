@@ -40,6 +40,7 @@ public class WaterMarkDemo {
     public static void execute(Function<StreamExecutionEnvironment, DataStream<String>> f) throws Exception {
         //1. 创建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1);
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
 
         /*
@@ -58,11 +59,8 @@ public class WaterMarkDemo {
         DataStream<String> stringDataSource = f.apply(env);
         SingleOutputStreamOperator<String> source = stringDataSource
                 .filter(StringUtils::isNotEmpty)
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .assignTimestampsAndWatermarks(WatermarkStrategy.<String>forBoundedOutOfOrderness(Duration.ofSeconds(0))
                         .withTimestampAssigner(timestampAssigner));
-//                .assignTimestampsAndWatermarks(((WatermarkStrategy) ctx -> new MyWtatermarkGenerator<>(Duration.ofSeconds(5)))
-//                        .withTimestampAssigner(timestampAssigner));
-
 
         //3. DataSet 批处理
         DataStream<JSONObject> set = source
