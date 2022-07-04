@@ -14,7 +14,7 @@
     <name>springDemo</name>
     <description>Demo project for Spring Boot</description>
     <!--打包打成war还是jar，maven上面有个闪电button，点亮之后能skip test-->
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
 
     <properties>
@@ -252,6 +252,12 @@
             <artifactId>flink-connector-kafka_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
+        <!--flink format json-->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-json</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
         <!-- flink tableApi -->
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -276,11 +282,11 @@
             <artifactId>flink-connector-hive_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.hive</groupId>
-            <artifactId>hive-exec</artifactId>
-            <version>3.1.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.hive</groupId>-->
+            <!--<artifactId>hive-exec</artifactId>-->
+            <!--<version>3.1.2</version>-->
+        <!--</dependency>-->
         <!--flink & iceberg-->
         <dependency>
             <groupId>org.apache.iceberg</groupId>

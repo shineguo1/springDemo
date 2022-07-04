@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  * @author xinjie_guo
@@ -18,16 +19,16 @@ public class SocketServer {
             System.out.println("启动 server ....");
             Socket s = ss.accept();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-            String response = "java python c++\n";
 
-            //每 2s 发送一次消息
-            while(true){
-                Thread.sleep(2000);
-                bw.write(response);
+            Scanner sc = new Scanner(System.in);
+            System.out.print("pls input:");
+            while (true) {
+                String input = sc.next();
+                bw.write(input + "\n");
                 bw.flush();
                 System.out.println("send");
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
