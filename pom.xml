@@ -347,6 +347,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>core</artifactId>
+            <version>4.8.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>
