@@ -1,6 +1,6 @@
 package gxj.study.demo.flink.window;
 
-import gxj.study.demo.flink.univ2.model.EventData;
+import gxj.study.demo.flink.common.model.EventData;
 import org.apache.flink.api.common.state.ListStateDescriptor;
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;

@@ -1,18 +1,9 @@
 package gxj.study.demo.flink.table;
 
-import gxj.study.demo.flink.MyPojo;
-import gxj.study.demo.flink.PojoSourceFunction;
-import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
-import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-
-import java.time.Duration;
 
 import static org.apache.flink.table.api.Expressions.$;
 

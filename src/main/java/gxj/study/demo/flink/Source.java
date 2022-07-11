@@ -1,6 +1,7 @@
 package gxj.study.demo.flink;
 
 import com.google.common.collect.Lists;
+import gxj.study.demo.flink.common.model.MyPojo;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

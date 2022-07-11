@@ -1,5 +1,6 @@
 package gxj.study.demo.flink;
 
+import gxj.study.demo.flink.common.model.MyPojo;
 import org.apache.flink.streaming.api.functions.source.ParallelSourceFunction;
 
 /**

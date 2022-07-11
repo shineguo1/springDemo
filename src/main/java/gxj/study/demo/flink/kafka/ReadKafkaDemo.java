@@ -1,11 +1,11 @@
 package gxj.study.demo.flink.kafka;
 
-import gxj.study.demo.flink.iceberg.WriteIcebergDemo;
+import gxj.study.demo.flink.common.constants.TopicConstant;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.module.hive.HiveModule;
-
+import gxj.study.demo.flink.common.constants.EnvConstant;
 /**
  * @author xinjie_guo
  * @version 1.0.0 createTime:  2022/6/27 17:04
@@ -57,7 +57,7 @@ public class ReadKafkaDemo {
 
     public static void createMyKafkaTable(TableEnvironment tableEnv) {
         //kafka topic
-        String topic = "gxj_dev";
+        String topic = TopicConstant.MY_TOPIC;
         //kafka节点
         String bootstrapServer = "";
         tableEnv.executeSql(
@@ -70,7 +70,7 @@ public class ReadKafkaDemo {
                         "'connector' = 'kafka',\n" +
                         "'topic' = '" + topic + "',\n" +
                         "'properties.bootstrap.servers' = '" + bootstrapServer + "',\n" +
-                        "'properties.group.id' = '" + WriteIcebergDemo.class.getSimpleName() + "',\n" +
+                        "'properties.group.id' = '" + EnvConstant.KAFKA_GROUP_ID + "',\n" +
                         " 'scan.startup.mode' = 'latest-offset',\n" +
                         " 'scan.topic-partition-discovery.interval' = '10000',\n" +
                         "'format' = 'json'\n" +

@@ -1,6 +1,6 @@
 package gxj.study.demo.flink.table;
 
-import gxj.study.demo.flink.MyPojo;
+import gxj.study.demo.flink.common.model.MyPojo;
 import gxj.study.demo.flink.PojoSourceFunction;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;

@@ -1,21 +1,17 @@
 package gxj.study.demo.flink.window;
 
-import akka.event.EventStream;
 import com.alibaba.fastjson.JSON;
-import gxj.study.demo.flink.univ2.model.EventData;
+import gxj.study.demo.flink.common.model.EventData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.PrintSinkFunction;
-import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -48,12 +44,12 @@ public class WindowLifeCycleDemo {
 
         /* ================ 3. 分组分窗口 ================ */
         eventStream
-                .filter(o -> Objects.nonNull(o.getData()) && StringUtils.isNotBlank(o.getData().getString("pairAddress")))
+                .filter(o -> Objects.nonNull(o.getData()) && StringUtils.isNotBlank(o.getData().getString("myKey")))
                 .assignTimestampsAndWatermarks(
                         WatermarkStrategy
                                 .<EventData>forBoundedOutOfOrderness(Duration.ofSeconds(2))
                                 .withTimestampAssigner(getSerializableTimestampAssigner()))
-                .keyBy(o -> o.getData().getString("pairAddress"))
+                .keyBy(o -> o.getData().getString("myKey"))
 //                .window(EventTimeSessionWindows.withGap(Time.seconds(5)))
                 .window(TumblingEventTimeWindows.of(Time.seconds(5)))
                 .trigger(MyTrigger.create())

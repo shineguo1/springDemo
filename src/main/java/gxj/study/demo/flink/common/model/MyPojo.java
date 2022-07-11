@@ -1,4 +1,4 @@
-package gxj.study.demo.flink;
+package gxj.study.demo.flink.common.model;
 
 import com.alibaba.fastjson.JSON;
 import lombok.AllArgsConstructor;

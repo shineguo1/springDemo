@@ -1,7 +1,7 @@
 package gxj.study.demo.flink.trigger;
 
 import com.alibaba.fastjson.JSON;
-import gxj.study.demo.flink.univ2.model.EventData;
+import gxj.study.demo.flink.common.model.EventData;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
