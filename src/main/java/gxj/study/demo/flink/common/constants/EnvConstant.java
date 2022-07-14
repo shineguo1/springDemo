@@ -13,4 +13,5 @@ public class EnvConstant {
 
     public static final String CHECKPOINT_ROOT = "hdfs://ns1/flink/job/sjzt/checkpoints";
 
+    public static final String HBASE_ZOOKEEPER_QUORUM = "172.20.192.234:2181,172.20.192.235:2181,172.20.192.236:2181";
 }
