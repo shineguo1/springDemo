@@ -35,7 +35,7 @@ public class MyContinuousEventTimeTrigger<W extends Window> extends Trigger<Obje
 
     @Override
     public TriggerResult onElement(Object element, long timestamp, W window, TriggerContext ctx) throws Exception {
-        System.out.println("【trigger】 onElement: " + JSON.toJSONString(element));
+//        System.out.println("【trigger】 onElement: " + JSON.toJSONString(element));
         if (window.maxTimestamp() <= ctx.getCurrentWatermark()) {
             // if the watermark is already past the window fire immediately
             return TriggerResult.FIRE;
@@ -56,9 +56,9 @@ public class MyContinuousEventTimeTrigger<W extends Window> extends Trigger<Obje
 
     @Override
     public TriggerResult onEventTime(long time, W window, TriggerContext ctx) throws Exception {
-        System.out.println("【trigger】 onEventTime: " +time);
+//        System.out.println("【trigger】 onEventTime: " +time);
         if (time == window.maxTimestamp()) {
-            System.out.println("【trigger】 onEventTime -> FIRE!");
+//            System.out.println("【trigger】 onEventTime -> FIRE!");
             return TriggerResult.FIRE;
         }
 
@@ -67,7 +67,7 @@ public class MyContinuousEventTimeTrigger<W extends Window> extends Trigger<Obje
             fireTimestamp.clear();
             fireTimestamp.add(time + interval);
             ctx.registerEventTimeTimer(time + interval);
-            System.out.println("【trigger】 onEventTime -> FIRE!");
+//            System.out.println("【trigger】 onEventTime -> FIRE!");
             return TriggerResult.FIRE;
         }
 

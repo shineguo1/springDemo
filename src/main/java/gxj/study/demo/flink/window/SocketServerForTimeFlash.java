@@ -1,4 +1,4 @@
-package gxj.study.demo.flink.datastream;
+package gxj.study.demo.flink.window;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author xinjie_guo
  * @version 1.0.0 createTime:  2022/6/20 18:01
  */
-public class SocketServer2 {
+public class SocketServerForTimeFlash {
     public static void main(String[] args) throws IOException, InterruptedException {
 
         try {
@@ -30,14 +30,18 @@ public class SocketServer2 {
                     "{\"key\":\"abc\",\"time\":\"9800\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"10000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"19000\",\"value\":1}\n",
-                    "{\"key\":\"@^%$#\",\"time\":\"20001\",\"value\":1}\n",
+                    "{\"key\":\"abc\",\"time\":\"20001\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"22000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"23000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"24000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"25000\",\"value\":1}\n",
+                    "{\"key\":\"abc\",\"time\":\"30001\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"33000\",\"value\":1}\n",
+                    "{\"key\":\"abc\",\"time\":\"34000\",\"value\":1}\n",
+                    "{\"key\":\"abc\",\"time\":\"63000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"73000\",\"value\":1}\n",
                     "{\"key\":\"abc\",\"time\":\"83000\",\"value\":1}\n",
+                    "{\"key\":\"abc\",\"time\":\"183000\",\"value\":1}\n",
             };
             int length = names.length;
             int i = 0;

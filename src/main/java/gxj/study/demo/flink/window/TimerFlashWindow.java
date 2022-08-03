@@ -40,7 +40,7 @@ public class TimerFlashWindow extends ProcessWindowFunction<JSONObject, JSONObje
     public void process(String s, Context context, Iterable<JSONObject> elements, Collector<JSONObject> out) throws Exception {
         key = s;
         long watermark = context.currentWatermark();
-        System.out.println(this + "in process, key:" + s + " water mark:" + watermark);
+//        System.out.println(this + "in process, key:" + s + " water mark:" + watermark);
 
         //接受元素
         Iterator<JSONObject> iterator = elements.iterator();
@@ -92,10 +92,16 @@ public class TimerFlashWindow extends ProcessWindowFunction<JSONObject, JSONObje
             //如果元素时间大于等于上一个元素的整点，说明上一个小时结束，进入当前小时。此时调整state缓存的值。
             //注意：上一条数据的小时和当前小时不一定是连续的，两条数据之间是允许间隔几个小时没有数据的！
             if (elementTimestamp >= hourSnapshot) {
-                //当前小时缓存的totalValue计入上一小时
-                Long lastHourValue = context.globalState().getState(hourTotalValueState).value();
-                lastHourValue = ObjectUtils.defaultIfNull(lastHourValue,0L);
-                context.globalState().getState(lastHourTotalValueState).update(lastHourValue);
+                //如果恰好是下一个小时，当前小时缓存的totalValue计入上一小时
+                if (elementTimestamp - hourSnapshot < TimeUtils.ONE_HOUR) {
+                    Long lastHourValue = context.globalState().getState(hourTotalValueState).value();
+                    lastHourValue = ObjectUtils.defaultIfNull(lastHourValue, 0L);
+                    context.globalState().getState(lastHourTotalValueState).update(lastHourValue);
+                }
+                //否则，上一个小时的汇总计为零（间隔2个小时以上，说明上个小时区间没数据）
+                else {
+                    context.globalState().getState(lastHourTotalValueState).update(0L);
+                }
                 //当前小时缓存的totalValue清零
                 context.globalState().getState(hourTotalValueState).update(0L);
                 context.globalState().getState(lastElementHourState).update(TimeUtils.getCurrentHour(elementTimestamp));
@@ -110,9 +116,9 @@ public class TimerFlashWindow extends ProcessWindowFunction<JSONObject, JSONObje
 
             //step3：更新当前小时区间快照结果
             //构造返回对象
-            o.put("snapHour",TimeUtils.getCurrentHour(elementTimestamp));
-            o.put("totalValue",hourTotalValue);
-            o.put("lastTotalValue",lastHourTotalValue);
+            o.put("snapHour", TimeUtils.getCurrentHour(elementTimestamp));
+            o.put("totalValue", hourTotalValue);
+            o.put("lastTotalValue", lastHourTotalValue);
             out.collect(o);
         }
     }
