@@ -12,6 +12,7 @@
     <logger level="ERROR" name="ch.qos.logback"/>
     <logger level="ERROR" name="org.springframework.web"/>
     <logger level="ERROR" name="org.apache.flink"/>
+    <!--<logger level="ERROR" name="org.apache.phoenix"/>-->
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

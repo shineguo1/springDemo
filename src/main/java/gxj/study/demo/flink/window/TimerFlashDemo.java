@@ -62,7 +62,9 @@ public class TimerFlashDemo {
         //3. DataSet 流处理
         //需求：记录数据的小时快照，如果一个小时内有连续数据，快照要能实时更新。如果一个小时内没有数据，要有零数据的快照。
         //思路：在每个小时初生成初始快照，后续有元素进入实时更新当前时间(小时)的快照
-        //[1HOUR]->INIT_SNAPSHOT->ELEMENT->ELEMENT->...->[2HOUR]->INIT_SNAPSHOT->...
+        // [1HOUR]->INIT_SNAPSHOT->ELEMENT->ELEMENT->...->
+        // [2HOUR]->INIT_SNAPSHOT->...->
+        // [3HOUR]->ELEMENT->(INIT_SNAPSHOT 晚于第一个element则跳过)->ELEMENT->
         //step1：这里输出element
         DataStream<JSONObject> set = source
                 .map(JSON::parseObject)
@@ -134,7 +136,7 @@ public class TimerFlashDemo {
              *
              * 观察到的现象：
              * - 对于新的keyed第一条消息来说，会先advanceWatermark（触发timer）再processElement
-             * - 对于旧的keyed的消息来说，会先processElement，然后如果发现能触发timer，就更新水位线。
+             * - 对于旧的keyed的消息来说，存在"先processElement，然后如果发现能触发timer，就更新水位线"的情况。
              * - 并非一定要达到注册的timer时间，processElement的过程中也存在推动timeService水位线的现象。
              *
              * 探索过程：
