@@ -52,6 +52,11 @@ public class SpringRetryService {
         }
     }
 
+    /**
+     * 参数个数和类型完全匹配才会被recover捕获.即只能捕获 T method(String,String) 格式的方法.
+     * 所以这个recover只能捕获doRequest的重试全部失败后的异常,不能捕获doRequestVoid
+     *
+     */
     @Recover
     private Object recover(Exception e, String param1, String param2) {
         count.remove();
