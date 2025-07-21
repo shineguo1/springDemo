@@ -8,3 +8,8 @@ a->b
 ```plantuml
 a->b
 ```
+
+```mermaid
+graph TD;
+a-->b;
+```
