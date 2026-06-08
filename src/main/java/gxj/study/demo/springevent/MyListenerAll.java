@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MyListenerAll implements ApplicationListener {
+
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-        System.out.println("MyListenerAll: 监听所有事件 | event:" + event);
+        System.out.println(Thread.currentThread().getName()+": MyListenerAll: 监听所有事件 | event:" + event);
     }
 }

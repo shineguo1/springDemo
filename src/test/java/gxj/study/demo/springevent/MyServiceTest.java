@@ -1,22 +1,27 @@
 package gxj.study.demo.springevent;
 
-import gxj.study.BaseTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import static org.junit.Assert.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Created by xinjie_guo on 2019/11/29.
  */
-public class MyServiceTest extends BaseTest{
+@ComponentScan(basePackages = {
+        "gxj.study.demo.springevent"
+})
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = MyServiceTest.class)
+public class MyServiceTest {
 
     @Autowired
     MyService service;
 
     @Test
-    public void  test(){
+    public void test() {
         service.doSomething();
     }
 

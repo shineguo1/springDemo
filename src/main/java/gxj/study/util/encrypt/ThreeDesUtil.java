@@ -1,7 +1,6 @@
 package gxj.study.util.encrypt;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -13,6 +12,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.Method;
+import java.util.Base64;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -58,12 +58,12 @@ public class ThreeDesUtil {
      */
     public static byte[] encryptMode(byte[] keybyte, byte[] src) {
         try {
-            // 生成密钥 
+            // 生成密钥
             SecretKey deskey = new SecretKeySpec(keybyte, Algorithm);
-            // 加密  
+            // 加密
             Cipher c1 = Cipher.getInstance(Algorithm);
             c1.init(Cipher.ENCRYPT_MODE, deskey);
-            return c1.doFinal(src);// 在单一方面的加密或解密 
+            return c1.doFinal(src);// 在单一方面的加密或解密
         } catch (java.security.NoSuchAlgorithmException e1) {
             log.error("encryptMode error", e1);
         } catch (javax.crypto.NoSuchPaddingException e2) {
@@ -131,7 +131,7 @@ public class ThreeDesUtil {
      * @return String
      */
     public static String doEncrypt(String src,String key) {
-        return Base64.encode(encryptMode(key.getBytes(), src.getBytes()));
+        return Base64.getEncoder().encodeToString(encryptMode(key.getBytes(), src.getBytes()));
     }
 
     /**
@@ -147,7 +147,7 @@ public class ThreeDesUtil {
         }
         byte[] decryptMode = new byte[0];
         try {
-            decryptMode = decryptMode(key.getBytes("UTF-8"), Base64.decode(src));
+            decryptMode = decryptMode(key.getBytes("UTF-8"), Base64.getDecoder().decode(src));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -171,7 +171,7 @@ public class ThreeDesUtil {
         if (StringUtils.isEmpty(src)) {
             return src;
         }
-        return Base64.encode(encryptMode(secKey.getBytes(), src.getBytes()));
+        return Base64.getEncoder().encodeToString(encryptMode(secKey.getBytes(), src.getBytes()));
     }
 
     /**
@@ -222,7 +222,7 @@ public class ThreeDesUtil {
         if (StringUtils.isEmpty(src)) {
             return src;
         }
-        byte[] mode = decryptMode(key.getBytes(), Base64.decode(src));
+        byte[] mode = decryptMode(key.getBytes(), Base64.getDecoder().decode(src));
         if (mode == null) {
             log.error("ERROR checkEncrypt PARAM: {}", doEncrypt(key,src));
             throw new RuntimeException("数据未加密");

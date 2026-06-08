@@ -1,6 +1,7 @@
 package gxj.study.demo.springevent;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
  * @description
  */
 @Component
-public class MyListener2 implements ApplicationListener<MyEvent> {
+public class MyListener2 {
 
-    @Override
+    @EventListener
     public void onApplicationEvent(MyEvent event) {
-        System.out.println("MyListener2: 监听 MyEvent事件 | event:" + event);
+        System.out.println(Thread.currentThread().getName()+": MyListener2: 监听 MyEvent事件 | event:" + event);
     }
 }

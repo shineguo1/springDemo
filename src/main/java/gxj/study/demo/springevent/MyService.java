@@ -1,6 +1,5 @@
 package gxj.study.demo.springevent;
 
-import gxj.study.demo.spring.bean.MyBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -16,15 +15,15 @@ public class MyService {
     ApplicationContext applicationContext;
 
     public void doSomething() {
-        System.out.println("do something 第一步");
+        System.out.println(Thread.currentThread().getName() + ": do something 第一步");
         //发布MyEvent事件
-        System.out.println("发布MyEvent事件");
+        System.out.println(Thread.currentThread().getName() + ": 发布MyEvent事件");
         applicationContext.publishEvent(new MyEvent(applicationContext));
 
         //发布MyEvent2事件
-        System.out.println("发布MyEvent2事件");
+        System.out.println(Thread.currentThread().getName() + ": 发布MyEvent2事件");
         applicationContext.publishEvent(new MyEvent2(applicationContext));
 
-
+        System.out.println(Thread.currentThread().getName() + ": 工作流完成！！！");
     }
 }
