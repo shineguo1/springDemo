@@ -14,6 +14,6 @@ public class MyListener1 implements ApplicationListener<MyEvent> {
 
     @Override
     public void onApplicationEvent(MyEvent event) {
-        System.out.println("MyListener1: 监听 MyEvent事件 | event:" + event);
+        System.out.println(Thread.currentThread().getName() + ": MyListener1: 监听 MyEvent事件 | event:" + event);
     }
 }

@@ -6,9 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
         (scanBasePackages = {"gxj.study"})
+@EnableAsync(proxyTargetClass = false)  // 关键：使用JDK代理
 @EnableAspectJAutoProxy(proxyTargetClass = false)
 @Import(AppConfig.class)
 //关闭nacos注解

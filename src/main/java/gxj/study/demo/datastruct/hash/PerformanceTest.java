@@ -1,7 +1,6 @@
 package gxj.study.demo.datastruct.hash;
 
 import gxj.study.util.FileUtils;
-import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator;
 import org.apache.commons.lang3.StringUtils;
 import org.roaringbitmap.RoaringBitmap;
 
@@ -44,7 +43,7 @@ public class PerformanceTest {
         }
         t2 = System.currentTimeMillis();
         System.out.println("intHashSet cost:" + (t2 - t1));
-        System.out.println("intHashSet memory:" + ObjectSizeCalculator.getObjectSize(zipHash));
+//        System.out.println("intHashSet memory:" + ObjectSizeCalculator.getObjectSize(zipHash));
         System.out.println("intHashSet size:" + zipHash.size());
 
         //基于布隆过滤器的耗时及内存
@@ -54,7 +53,7 @@ public class PerformanceTest {
         }
         t2 = System.currentTimeMillis();
         System.out.println("zipBloomFilter cost:" + (t2 - t1));
-        System.out.println("zipBloomFilter memory:" + ObjectSizeCalculator.getObjectSize(bf));
+//        System.out.println("zipBloomFilter memory:" + ObjectSizeCalculator.getObjectSize(bf));
         System.out.println("zipBloomFilter size:" + bf.size());
 
         //基于自定义简单hash布隆过滤器的耗时及内存
@@ -64,7 +63,7 @@ public class PerformanceTest {
         }
         t2 = System.currentTimeMillis();
         System.out.println("myBloomFilter cost:" + (t2 - t1));
-        System.out.println("myBloomFilter memory:" + ObjectSizeCalculator.getObjectSize(mybf));
+//        System.out.println("myBloomFilter memory:" + ObjectSizeCalculator.getObjectSize(mybf));
         System.out.println("myBloomFilter size:" + mybf.size());
 
 
@@ -76,7 +75,7 @@ public class PerformanceTest {
         }
         t2 = System.currentTimeMillis();
         System.out.println("RoaringBitMap cost:" + (t2 - t1));
-        System.out.println("RoaringBitMap memory:" + ObjectSizeCalculator.getObjectSize(bm));
+//        System.out.println("RoaringBitMap memory:" + ObjectSizeCalculator.getObjectSize(bm));
         System.out.println("RoaringBitMap size:" + bm.size());
 
 
@@ -89,7 +88,7 @@ public class PerformanceTest {
         t2 = System.currentTimeMillis();
         System.out.println("连续数");
         System.out.println("RoaringBitMap cost:" + (t2 - t1));
-        System.out.println("RoaringBitMap memory:" + ObjectSizeCalculator.getObjectSize(m));
+//        System.out.println("RoaringBitMap memory:" + ObjectSizeCalculator.getObjectSize(m));
 
         //基于hashMap的化简版hash过滤器的耗时及内存
         t1 = System.currentTimeMillis();
@@ -99,7 +98,7 @@ public class PerformanceTest {
         }
         t2 = System.currentTimeMillis();
         System.out.println("HashFilter cost:" + (t2 - t1));
-        System.out.println("HashFilter memory:" + ObjectSizeCalculator.getObjectSize(m));
+//        System.out.println("HashFilter memory:" + ObjectSizeCalculator.getObjectSize(m));
         System.out.println("HashFilter size:" + hf.size());
     }
 
